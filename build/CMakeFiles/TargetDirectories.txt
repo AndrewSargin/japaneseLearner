@@ -1,0 +1,3 @@
+/home/andrew/projects/japanese-learner/build/CMakeFiles/japanese-learner.dir
+/home/andrew/projects/japanese-learner/build/CMakeFiles/edit_cache.dir
+/home/andrew/projects/japanese-learner/build/CMakeFiles/rebuild_cache.dir
