@@ -1,3 +1,5 @@
+#pragma once
+
 #include <sqlite3.h>
 #include <string>
 #include <vector>
@@ -26,5 +28,6 @@ class Dictionary {
     private:
         sqlite3* db;
         int sqlSelectCallback(void*, int, char**, char**);
+        Word findSqliteEntries(sqlite3_stmt* stmt);
 
 };

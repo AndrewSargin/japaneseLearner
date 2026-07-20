@@ -148,4 +148,5 @@ CMakeFiles/japanese-learner.dir/src/main.cpp.o: \
  /usr/include/c++/16/bits/stl_bvector.h \
  /usr/include/c++/16/bits/vector.tcc \
  /home/andrew/projects/japanese-learner/src/engine/dictionary.h \
- /usr/include/sqlite3.h
+ /usr/include/sqlite3.h \
+ /home/andrew/projects/japanese-learner/src/engine/engine.h

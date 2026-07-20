@@ -153,6 +153,30 @@ src/engine/dictionary.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/src/engine/dictionary.cpp.s
 .PHONY : src/engine/dictionary.cpp.s
 
+src/engine/engine.o: src/engine/engine.cpp.o
+.PHONY : src/engine/engine.o
+
+# target to build an object file
+src/engine/engine.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.o
+.PHONY : src/engine/engine.cpp.o
+
+src/engine/engine.i: src/engine/engine.cpp.i
+.PHONY : src/engine/engine.i
+
+# target to preprocess a source file
+src/engine/engine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.i
+.PHONY : src/engine/engine.cpp.i
+
+src/engine/engine.s: src/engine/engine.cpp.s
+.PHONY : src/engine/engine.s
+
+# target to generate assembly for a file
+src/engine/engine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.s
+.PHONY : src/engine/engine.cpp.s
+
 src/engine/subtitle_parser.o: src/engine/subtitle_parser.cpp.o
 .PHONY : src/engine/subtitle_parser.o
 
@@ -213,6 +237,9 @@ help:
 	@echo "... src/engine/dictionary.o"
 	@echo "... src/engine/dictionary.i"
 	@echo "... src/engine/dictionary.s"
+	@echo "... src/engine/engine.o"
+	@echo "... src/engine/engine.i"
+	@echo "... src/engine/engine.s"
 	@echo "... src/engine/subtitle_parser.o"
 	@echo "... src/engine/subtitle_parser.i"
 	@echo "... src/engine/subtitle_parser.s"

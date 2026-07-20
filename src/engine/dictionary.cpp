@@ -3,19 +3,7 @@
 #include <sqlite3.h>
 #include <string>
 
-int callback(void *NotUsed, int numOfResults, char** values, char** colName){
-
-    for (int i = 0; i < numOfResults; i++){
-
-        std::cout << colName[i] << ": " << values[i] << std::endl;
-
-    }
-
-    std::cout << std::endl;
-
-    return 0;
-};
-
+// Connetcting to database by .db file path
 Dictionary::Dictionary(const std::string& db_path){
     
     if (sqlite3_open(db_path.c_str(), &db) != SQLITE_OK) {
@@ -30,73 +18,86 @@ Dictionary::~Dictionary(){
 
 };
 
+// Searching for word in japanese by its kanji
 Word Dictionary::getEntryByKanji(const std::string& kanji){
     std::string sql = "SELECT w.kanji, w.reading, t.language, t.meaning\n"
                       "FROM words w\n"
                       "JOIN translations t ON w.id = t.word_id\n"
-                      "WHERE w.kanji = '食べる'";
+                      "WHERE w.kanji = ?";
     
     sqlite3_stmt* stmt;
 
     Word word;
 
-    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
-
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+    int rc = sqlite3_bind_text(stmt, 1, kanji.c_str(), -1, SQLITE_STATIC);
 
     if( rc != SQLITE_OK) {
         std::cout << "Error: " << sqlite3_errmsg(db) << std::endl;
     }
     else {
-
-        int colNum = sqlite3_column_count(stmt);
-        bool done = false;
-        bool first_iter = true;
-
-        std::cout << "Starting search" << std::endl;
-
-        while(!done){
-
-            switch(sqlite3_step(stmt)){
-                case SQLITE_ROW: {
-                    if(first_iter) {
-                        word.kanji = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));    
-                        word.reading = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
-                        first_iter = false;
-                    }
-                    Translation trans;
-                    trans.language = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
-                    trans.meaning = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)));
-                    word.meanings.push_back(trans);
-                    break;
-                }
-
-                case SQLITE_DONE:
-                    sqlite3_finalize(stmt);
-                    done = true;
-                    break;
-
-            }
-
-        }
-
+        word = findSqliteEntries(stmt);
     }
-
-    //sqlite3_exec(db, sql.c_str(), sqlSelectCallback, 0, &zErrMsg);
 
     std::cout << "Search is finished" << std::endl;
     return word;
 };
 
-int Dictionary::sqlSelectCallback(void* NotUsed, int numOfResults, char** value, char** colName){
+Word Dictionary::getEntryByReading(const std::string& reading ){
+    std::string sql = "SELECT w.kanji, w.reading, t.language, t.meaning\n"
+                      "FROM words w\n"
+                      "JOIN translations t ON w.id = t.word_id\n"
+                      "WHERE w.reading = ?";
 
-    for( int i = 0; i < numOfResults; i++) {
+    sqlite3_stmt* stmt;
+
+    Word word;
+
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+    if(sqlite3_bind_text(stmt, 1, reading.c_str(), -1, SQLITE_STATIC) != SQLITE_OK) {
+        std::cout << "Error: " << sqlite3_errmsg(db) << std::endl;
+    }
+    else {
+        word = findSqliteEntries(stmt);
+    }
     
-        std::cout << colName[i] << ": " << value[i] << std::endl;
+    std::cout << "Search is finished" << std::endl;
+    return word;
+    
+}
 
+// Search function for database
+Word Dictionary::findSqliteEntries(sqlite3_stmt* stmt){
+    
+    int colNum = sqlite3_column_count(stmt);
+    bool done = false;
+    bool first_iter = true;
+    Word word;
+
+    std::cout << "Starting search" << std::endl;
+
+    while(!done){
+    
+        switch(sqlite3_step(stmt)){
+            case SQLITE_ROW: {
+                if (first_iter) {
+                    word.kanji = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));
+                    word.reading = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+                    first_iter = false;
+                }
+                Translation translation;
+                translation.language = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+                translation.meaning = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)));
+                word.meanings.push_back(translation);
+                break;
+            }
+
+            case SQLITE_DONE:
+                sqlite3_finalize(stmt);
+                done = true;
+                break;
+        }
     }
 
-    std::cout << std::endl;
-
-    return 0;
-
-};
+    return word;
+}

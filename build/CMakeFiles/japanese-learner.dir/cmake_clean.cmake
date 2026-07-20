@@ -2,6 +2,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/japanese-learner.dir/link.d"
   "CMakeFiles/japanese-learner.dir/src/engine/dictionary.cpp.o"
   "CMakeFiles/japanese-learner.dir/src/engine/dictionary.cpp.o.d"
+  "CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.o"
+  "CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.o.d"
   "CMakeFiles/japanese-learner.dir/src/engine/subtitle_parser.cpp.o"
   "CMakeFiles/japanese-learner.dir/src/engine/subtitle_parser.cpp.o.d"
   "CMakeFiles/japanese-learner.dir/src/main.cpp.o"

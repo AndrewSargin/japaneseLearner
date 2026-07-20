@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <string>
 
@@ -10,12 +12,12 @@ struct Subtitle {
 class SubtitleParser {
 
     public:
-        std::vector<Subtitle> parse(const std::string& filepath);
-        std::string detectFormat(const std::string& filepath);
+        static std::vector<Subtitle> parse(const std::string& filepath);
+        static std::string detectFormat(const std::string& filepath);
 
     private:
-        std::vector<double> parseTimecode(const std::string& timecode);
+        static std::vector<double> parseTimecode(const std::string& timecode);
         //std::string detectFormat(const std::string& filepath);
-        double convertToSeconds(const std::string& line);
-        bool isNumber(const std::string& line);
+        static double convertToSeconds(const std::string& line);
+        static bool isNumber(const std::string& line);
 };

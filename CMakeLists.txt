@@ -9,6 +9,7 @@ add_executable(japanese-learner
     src/main.cpp
     src/engine/subtitle_parser.cpp
     src/engine/dictionary.cpp
+    src/engine/engine.cpp
 )
 
 find_package(SQLite3 REQUIRED)
