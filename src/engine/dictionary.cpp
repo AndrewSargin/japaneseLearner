@@ -43,6 +43,8 @@ Word Dictionary::getEntryByKanji(const std::string& kanji){
     return word;
 };
 
+
+// Searching for a word by its reading (probably useless)
 Word Dictionary::getEntryByReading(const std::string& reading ){
     std::string sql = "SELECT w.kanji, w.reading, t.language, t.meaning\n"
                       "FROM words w\n"
@@ -66,7 +68,7 @@ Word Dictionary::getEntryByReading(const std::string& reading ){
     
 }
 
-// Search function for database
+// Search in database by a given statement
 Word Dictionary::findSqliteEntries(sqlite3_stmt* stmt){
     
     int colNum = sqlite3_column_count(stmt);

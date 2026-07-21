@@ -4,11 +4,13 @@
 #include <string>
 #include <vector>
 
+// Stores database data about translation
 struct Translation {
     std::string language;
     std::string meaning;
 };
 
+// Stores database data about a word
 struct Word {
     std::string kanji;
     std::string reading;
@@ -16,18 +18,23 @@ struct Word {
     int jlptLevel = {0};
 };
 
+// Connects to an sqlite database and works with it
 class Dictionary {
 
     public:
+        // Constructs a class and connects to a database
         Dictionary(const std::string& dbPath);
         ~Dictionary();
-
+        
+        // Searchs for a word in a db by its kanji
         Word getEntryByKanji(const std::string& kanji);
+        // Searchs for a word in a db by its hiragana reading (probably useless)
         Word getEntryByReading(const std::string& reading);
 
     private:
         sqlite3* db;
-        int sqlSelectCallback(void*, int, char**, char**);
+
+        // Searches in db by a given sqlite statement
         Word findSqliteEntries(sqlite3_stmt* stmt);
 
 };

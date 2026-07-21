@@ -1,6 +1,7 @@
 #include <iostream>
 #include "engine.h"
 
+// Constructs a class and initializes a dictionary
 Engine::Engine(const std::string& db_path) : dictionary(db_path) {
 
 }

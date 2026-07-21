@@ -4,32 +4,34 @@
 Tokenizer::Tokenizer(const std::string& dict_path, const std::string& dictionary){
 
     tagger = MeCab::createTagger(dict_path.c_str());
-    node = nullptr;
 
 };
 
 Tokenizer::~Tokenizer(){
     delete tagger;
-    delete node;
 
 };
 
+// Calls suitable method depending on chosen dictionary
 std::vector<Token> Tokenizer::getTokens(const std::string& text){
     
 //For now it is always unidic
 
-    node = tagger->parseToNode(text.c_str());
+    const MeCab::Node *node = tagger->parseToNode(text.c_str());
     std::vector<Token> tokenized;
 
     if(1) {
-        tokenized = getByUnidic();
+        tokenized = getByUnidic(node);
     }
-    else tokenized = getByIpadic();
+    else tokenized = getByIpadic(node);
 
     return tokenized;
 };
 
-std::vector<Token> Tokenizer::getByUnidic(){
+
+//Should I remove spaces from text?
+// Tokenizes sentences with Unidic
+std::vector<Token> Tokenizer::getByUnidic(const MeCab::Node *node){
 
     std::vector<Token> tokens;
 
@@ -57,10 +59,12 @@ std::vector<Token> Tokenizer::getByUnidic(){
 
 };
 
-std::vector<Token> Tokenizer::getByIpadic(){
+// Tokenizes sentences with Ipadic
+std::vector<Token> Tokenizer::getByIpadic(const MeCab::Node *node){
 
 };
 
+// Splits output of node->feature by commas
 std::vector<std::string> Tokenizer::splitByComma(const std::string& feature){
 
         std::vector<std::string> substrings;
@@ -91,6 +95,7 @@ std::vector<std::string> Tokenizer::splitByComma(const std::string& feature){
 
 };
 
+// Converts katakana to hiragana
 std::string Tokenizer::kataToHira(const std::string& katakana){
 
 

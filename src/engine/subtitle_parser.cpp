@@ -12,6 +12,7 @@ bool SubtitleParser::isNumber (const std::string& line){
 
 }
 
+// Loads subtitles and processes them to store in a class
 std::vector<Subtitle> SubtitleParser::parse (const std::string& filepath){
 
     std::string line;
@@ -61,6 +62,7 @@ std::vector<Subtitle> SubtitleParser::parse (const std::string& filepath){
 
 }
 
+// Converts start and end time from string to doubles
 std::vector<double> SubtitleParser::parseTimecode(const std::string& line){
 
     std::vector<double> times;
@@ -74,6 +76,7 @@ std::vector<double> SubtitleParser::parseTimecode(const std::string& line){
     
 }
 
+// Converts time from hh:mm:ss,ms (string) to seconds (double)
 double SubtitleParser::convertToSeconds(const std::string& line){
     int firstColon = line.find_first_of(":");
     int hours = std::stoi(line.substr(0, firstColon));
@@ -84,6 +87,7 @@ double SubtitleParser::convertToSeconds(const std::string& line){
 
 }
 
+// Doesn't have proper implementation now
 std::string SubtitleParser::detectFormat(const std::string& filepath){
     
     return filepath.substr(filepath.find_last_of(".") + 1);

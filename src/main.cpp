@@ -57,5 +57,10 @@ int main () {
         std::cout << "POS: " << token.POS << " dictForm: " << token.dictForm << " in sentence: " << token.sentenceForm << " reading: " << token.reading << std::endl;
     }
 
+    std::vector<Token> tokens2 = tokenizer.getTokens(engine.getPhraseAtTime(5166.322));
+
+    for(auto token : tokens2){
+        std::cout << "POS: " << token.POS << " dictForm: " << token.dictForm << " in sentence: " << token.sentenceForm << " reading: " << token.reading << std::endl;
+    }
     return 0;
 }
