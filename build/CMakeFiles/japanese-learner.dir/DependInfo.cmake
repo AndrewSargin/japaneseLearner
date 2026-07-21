@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/andrew/projects/japanese-learner/src/engine/dictionary.cpp" "CMakeFiles/japanese-learner.dir/src/engine/dictionary.cpp.o" "gcc" "CMakeFiles/japanese-learner.dir/src/engine/dictionary.cpp.o.d"
   "/home/andrew/projects/japanese-learner/src/engine/engine.cpp" "CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.o" "gcc" "CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.o.d"
   "/home/andrew/projects/japanese-learner/src/engine/subtitle_parser.cpp" "CMakeFiles/japanese-learner.dir/src/engine/subtitle_parser.cpp.o" "gcc" "CMakeFiles/japanese-learner.dir/src/engine/subtitle_parser.cpp.o.d"
+  "/home/andrew/projects/japanese-learner/src/engine/tokenizer.cpp" "CMakeFiles/japanese-learner.dir/src/engine/tokenizer.cpp.o" "gcc" "CMakeFiles/japanese-learner.dir/src/engine/tokenizer.cpp.o.d"
   "/home/andrew/projects/japanese-learner/src/main.cpp" "CMakeFiles/japanese-learner.dir/src/main.cpp.o" "gcc" "CMakeFiles/japanese-learner.dir/src/main.cpp.o.d"
   "" "japanese-learner" "gcc" "CMakeFiles/japanese-learner.dir/link.d"
   )

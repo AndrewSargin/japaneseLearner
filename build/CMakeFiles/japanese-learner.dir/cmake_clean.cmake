@@ -6,6 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.o.d"
   "CMakeFiles/japanese-learner.dir/src/engine/subtitle_parser.cpp.o"
   "CMakeFiles/japanese-learner.dir/src/engine/subtitle_parser.cpp.o.d"
+  "CMakeFiles/japanese-learner.dir/src/engine/tokenizer.cpp.o"
+  "CMakeFiles/japanese-learner.dir/src/engine/tokenizer.cpp.o.d"
   "CMakeFiles/japanese-learner.dir/src/main.cpp.o"
   "CMakeFiles/japanese-learner.dir/src/main.cpp.o.d"
   "japanese-learner"

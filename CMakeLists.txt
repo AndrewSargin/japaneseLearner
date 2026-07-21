@@ -10,7 +10,9 @@ add_executable(japanese-learner
     src/engine/subtitle_parser.cpp
     src/engine/dictionary.cpp
     src/engine/engine.cpp
+    src/engine/tokenizer.cpp
 )
 
 find_package(SQLite3 REQUIRED)
-target_link_libraries(japanese-learner SQLite3::SQLite3)
+target_include_directories(japanese-learner PRIVATE /usr/include)
+target_link_libraries(japanese-learner SQLite3::SQLite3 mecab)

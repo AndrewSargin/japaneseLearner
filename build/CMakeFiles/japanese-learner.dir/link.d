@@ -6,7 +6,9 @@ japanese-learner: \
   CMakeFiles/japanese-learner.dir/src/engine/subtitle_parser.cpp.o \
   CMakeFiles/japanese-learner.dir/src/engine/dictionary.cpp.o \
   CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.o \
+  CMakeFiles/japanese-learner.dir/src/engine/tokenizer.cpp.o \
   /usr/lib/libsqlite3.so \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libmecab.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/libstdc++.a \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libm.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libm.so \
@@ -36,7 +38,8 @@ japanese-learner: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/libgcc.a \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/libgcc.a \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/crtendS.o \
-  /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/crtn.o
+  /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/crtn.o \
+  /usr/lib/ld-linux-x86-64.so.2
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/Scrt1.o:
 
@@ -52,7 +55,11 @@ CMakeFiles/japanese-learner.dir/src/engine/dictionary.cpp.o:
 
 CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.o:
 
+CMakeFiles/japanese-learner.dir/src/engine/tokenizer.cpp.o:
+
 /usr/lib/libsqlite3.so:
+
+/usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libmecab.so:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/libstdc++.a:
 
@@ -113,3 +120,5 @@ CMakeFiles/japanese-learner.dir/src/engine/engine.cpp.o:
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/crtendS.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/crtn.o:
+
+/usr/lib/ld-linux-x86-64.so.2:

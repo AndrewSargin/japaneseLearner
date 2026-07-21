@@ -85,12 +85,12 @@ clean: CMakeFiles/japanese-learner.dir/clean
 CMakeFiles/japanese-learner.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrew/projects/japanese-learner/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target japanese-learner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrew/projects/japanese-learner/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target japanese-learner"
 .PHONY : CMakeFiles/japanese-learner.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/japanese-learner.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrew/projects/japanese-learner/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrew/projects/japanese-learner/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/japanese-learner.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrew/projects/japanese-learner/build/CMakeFiles 0
 .PHONY : CMakeFiles/japanese-learner.dir/rule
@@ -102,7 +102,7 @@ japanese-learner: CMakeFiles/japanese-learner.dir/rule
 # codegen rule for target.
 CMakeFiles/japanese-learner.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrew/projects/japanese-learner/build/CMakeFiles --progress-num=1,2,3,4,5 "Finished codegen for target japanese-learner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/andrew/projects/japanese-learner/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Finished codegen for target japanese-learner"
 .PHONY : CMakeFiles/japanese-learner.dir/codegen
 
 # clean rule for target.

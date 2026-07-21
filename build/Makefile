@@ -201,6 +201,30 @@ src/engine/subtitle_parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/src/engine/subtitle_parser.cpp.s
 .PHONY : src/engine/subtitle_parser.cpp.s
 
+src/engine/tokenizer.o: src/engine/tokenizer.cpp.o
+.PHONY : src/engine/tokenizer.o
+
+# target to build an object file
+src/engine/tokenizer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/src/engine/tokenizer.cpp.o
+.PHONY : src/engine/tokenizer.cpp.o
+
+src/engine/tokenizer.i: src/engine/tokenizer.cpp.i
+.PHONY : src/engine/tokenizer.i
+
+# target to preprocess a source file
+src/engine/tokenizer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/src/engine/tokenizer.cpp.i
+.PHONY : src/engine/tokenizer.cpp.i
+
+src/engine/tokenizer.s: src/engine/tokenizer.cpp.s
+.PHONY : src/engine/tokenizer.s
+
+# target to generate assembly for a file
+src/engine/tokenizer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/japanese-learner.dir/build.make CMakeFiles/japanese-learner.dir/src/engine/tokenizer.cpp.s
+.PHONY : src/engine/tokenizer.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -243,6 +267,9 @@ help:
 	@echo "... src/engine/subtitle_parser.o"
 	@echo "... src/engine/subtitle_parser.i"
 	@echo "... src/engine/subtitle_parser.s"
+	@echo "... src/engine/tokenizer.o"
+	@echo "... src/engine/tokenizer.i"
+	@echo "... src/engine/tokenizer.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

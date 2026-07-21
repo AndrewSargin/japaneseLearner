@@ -1,16 +1,16 @@
 #include <iostream>
-#include <ostream>
 #include <string>
-
 #include "engine/subtitle_parser.h"
 #include "engine/dictionary.h"
 #include "engine/engine.h"
+#include "engine/tokenizer.h"
 
 
 int main () {
 
     std::string testPath = "/home/andrew/projects/japanese-learner/data/test.srt"; 
     std::string db_path = "/home/andrew/projects/japanese-learner/data/dictionary.db";
+    std::string unidic_path = "-d /usr/lib/mecab/dic/unidic";
     SubtitleParser parser;
     auto subs = parser.parse(testPath);
 
@@ -45,6 +45,17 @@ int main () {
     std::cout << "Phrase at 80.102: " << engine.getPhraseAtTime(80.102) << std::endl;
     std::cout << "Phrase at 5166.322: " << engine.getPhraseAtTime(5166.322) << std::endl;
     std::cout << "Phrase at 5166.300: " << engine.getPhraseAtTime(5166.300) << std::endl;
+
+
+    std::cout << "Mecab: " << std::endl;
+
+    Tokenizer tokenizer = Tokenizer(unidic_path, "unidic");
+
+    std::vector<Token> tokens = tokenizer.getTokens("今日は学校へ行った");
+
+    for(auto token : tokens){
+        std::cout << "POS: " << token.POS << " dictForm: " << token.dictForm << " in sentence: " << token.sentenceForm << " reading: " << token.reading << std::endl;
+    }
 
     return 0;
 }
