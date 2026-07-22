@@ -1,8 +1,10 @@
 #include <iostream>
 #include "engine.h"
 
-// Constructs a class and initializes a dictionary
-Engine::Engine(const std::string& db_path) : dictionary(db_path) {
+// Constructs a class and initializes a dictionary and tokenizer
+Engine::Engine(const std::string& db_path, const std::string& dict_path, const std::string& dictionary) :
+    dictionary(db_path),
+    tokenizer(dict_path, dictionary) {
 
 }
 

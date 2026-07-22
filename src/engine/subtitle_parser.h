@@ -16,7 +16,7 @@ class SubtitleParser {
     public:
         // Opens a subtitile file and parses it
         static std::vector<Subtitle> parse(const std::string& filepath);
-        // Doesn't have inplementation now
+        // Doesn't have implementation now
         static std::string detectFormat(const std::string& filepath);
 
     private:

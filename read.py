@@ -1,26 +1,36 @@
 import sqlite3
-import os
 
-db = sqlite3.connect('data/dictionary.db')
-cur = db.cursor()
+# 1. Подключаемся к вашей базе данных
+conn = sqlite3.connect('data/dictionary.db')
+cursor = conn.cursor()
 
-# Сколько слов
-cur.execute('SELECT COUNT(*) FROM words')
-print(f'Слов: {cur.fetchone()[0]}')
+try:
+    # 2. Достаем первые 5 строк из таблицы (замените названия столбца и таблицы на ваши)
+    # Предполагаем, что столбец называется character, а таблица kanji_table
+    cursor.execute("SELECT kanji FROM words LIMIT 5")
+    rows = cursor.fetchall()
+    
+    print("--- АНАЛИЗ СТРОК ИЗ БАЗЫ ДАННЫХ ---")
+    if not rows:
+        print("Таблица пустая или столбец указан неверно!")
+    
+    for index, row in enumerate(rows, 1):
+        db_kanji = row[0]
+        
+        # Если в ячейке вдруг None, пропустим её
+        if db_kanji is None:
+            print(f"Строка {index}: В базе хранится NULL (пустота)")
+            continue
+            
+        # Печатаем визуальный вид и технический (repr)
+        print(f"Строка {index}:")
+        print(f"  Как выглядит на экране: '{db_kanji}'")
+        print(f"  Как видит Python (repr): {repr(db_kanji)}")
+        print(f"  Длина значения в БД : {len(str(db_kanji))} симв.")
+        print("-" * 35)
 
-# Сколько переводов
-cur.execute('SELECT COUNT(*) FROM translations')
-print(f'Переводов: {cur.fetchone()[0]}')
+except sqlite3.Error as e:
+    print(f"Ошибка при чтении базы данных: {e}")
+finally:
+    conn.close()
 
-# Пример — найти слово
-cur.execute('''
-    SELECT w.kanji, w.reading, t.language, t.meaning
-    FROM words w
-    JOIN translations t ON w.id = t.word_id
-    WHERE w.kanji = '食べる'
-''')
-
-for row in cur.fetchall():
-    print(row)
-
-db.close()

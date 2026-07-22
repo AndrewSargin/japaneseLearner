@@ -33,6 +33,8 @@ class Tokenizer {
         // Splits an output from node's feature field
         std::vector<std::string> splitByComma(const std::string& features);
 
+        std::string meCabDictionary;
+
         MeCab::Tagger *tagger;
 
 };

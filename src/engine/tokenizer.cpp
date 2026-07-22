@@ -4,7 +4,7 @@
 Tokenizer::Tokenizer(const std::string& dict_path, const std::string& dictionary){
 
     tagger = MeCab::createTagger(dict_path.c_str());
-
+    meCabDictionary = dictionary;
 };
 
 Tokenizer::~Tokenizer(){
