@@ -1,5 +1,5 @@
-./yomitan
+.read.py
+./data/yomitan
 ./data/test.srt
-./read.py
-./dictionary.db
-./tanos_co_uk
+.data/dictionary.db
+.data/tanos_co_uk
