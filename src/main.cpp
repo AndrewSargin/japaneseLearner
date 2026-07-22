@@ -39,7 +39,7 @@ int main () {
     }
     std::cout << std::endl;
 
-    Engine engine = Engine(db_path);
+    Engine engine = Engine(db_path, db_path, "unidic");
 
     engine.loadSubtitles(testPath);
     std::cout << "Phrase at 80.102: " << engine.getPhraseAtTime(80.102) << std::endl;
