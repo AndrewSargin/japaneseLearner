@@ -5,6 +5,7 @@
 #include <vector>
 
 // Stores database data about translation
+// TODO: figure out a way to access selected language by it's name
 struct Translation {
     std::string language;
     std::string meaning;

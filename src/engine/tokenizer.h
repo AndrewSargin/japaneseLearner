@@ -21,6 +21,7 @@ class Tokenizer {
         Tokenizer(const std::string& dict_path, const std::string& dictionary);
         ~Tokenizer();
         // Calls tokenization methods depending on MeCab dictionary
+        // TODO: translate POS from japanese
         std::vector<Token> getTokens(const std::string& text);
 
     private:

@@ -20,7 +20,7 @@ Dictionary::~Dictionary(){
 
 // Searching for word in japanese by its kanji
 Word Dictionary::getEntryByKanji(const std::string& kanji){
-    std::string sql = "SELECT w.kanji, w.reading, t.language, t.meaning\n"
+    std::string sql = "SELECT w.kanji, w.reading, w.jlpt_level, t.language, t.meaning\n"
                       "FROM words w\n"
                       "JOIN translations t ON w.id = t.word_id\n"
                       "WHERE w.kanji = ?";
@@ -39,14 +39,14 @@ Word Dictionary::getEntryByKanji(const std::string& kanji){
         word = findSqliteEntries(stmt);
     }
 
-    std::cout << "Search is finished" << std::endl;
+    //std::cout << "Search is finished" << std::endl;
     return word;
 };
 
 
 // Searching for a word by its reading (probably useless)
 Word Dictionary::getEntryByReading(const std::string& reading ){
-    std::string sql = "SELECT w.kanji, w.reading, t.language, t.meaning\n"
+    std::string sql = "SELECT w.kanji, w.reading, w.jlpt_level, t.language, t.meaning\n"
                       "FROM words w\n"
                       "JOIN translations t ON w.id = t.word_id\n"
                       "WHERE w.reading = ?";
@@ -63,7 +63,7 @@ Word Dictionary::getEntryByReading(const std::string& reading ){
         word = findSqliteEntries(stmt);
     }
     
-    std::cout << "Search is finished" << std::endl;
+    //std::cout << "Search is finished" << std::endl;
     return word;
     
 }
@@ -76,7 +76,7 @@ Word Dictionary::findSqliteEntries(sqlite3_stmt* stmt){
     bool first_iter = true;
     Word word;
 
-    std::cout << "Starting search" << std::endl;
+    //std::cout << "Starting search" << std::endl;
 
     while(!done){
     
@@ -85,11 +85,12 @@ Word Dictionary::findSqliteEntries(sqlite3_stmt* stmt){
                 if (first_iter) {
                     word.kanji = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));
                     word.reading = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+                    word.jlptLevel = sqlite3_column_int(stmt, 2);
                     first_iter = false;
                 }
                 Translation translation;
-                translation.language = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
-                translation.meaning = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)));
+                translation.language = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)));
+                translation.meaning = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4)));
                 word.meanings.push_back(translation);
                 break;
             }

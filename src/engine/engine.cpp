@@ -1,5 +1,6 @@
 #include <iostream>
 #include "engine.h"
+#include "tokenizer.h"
 
 // Constructs a class and initializes a dictionary and tokenizer
 Engine::Engine(const std::string& db_path, const std::string& dict_path, const std::string& dictionary) :
@@ -20,7 +21,7 @@ void Engine::loadSubtitles(const std::string& filepath){
 }
 
 // For now the search is done by looking through the vector of subtitles
-// It`s a binaty search now, but for a played video it`s better to store an index
+// It's a binaty search now, but for a played video it's better to store an index
 // Also this method might not find subs that go parallel if such exist
 // In the future I plan to make a subtitle cache generation to store data in .db
 std::string Engine::getPhraseAtTime(double time){
@@ -61,5 +62,27 @@ std::string Engine::getPhraseAtTime(double time){
 
     std::cout << "returning" << std::endl;
     return subtitles[index].text;
+}
+
+void Engine::printCurrentWords(const std::string& phrase){
+
+    std::vector<Token> tokens = tokenizer.getTokens(phrase);
+
+    for (Token token : tokens){
+
+        std::cout << token.POS << " " << token.reading << " " << token.dictForm;
+        
+        Word word = dictionary.getEntryByKanji(token.dictForm);
+        if(word.kanji.length() != 0){
+            std::cout << " " << word.meanings.at(0).meaning;
+            
+            if(word.jlptLevel != 0) 
+                std::cout << " N" << word.jlptLevel; 
+            
+        }
+
+        std::cout << std::endl;
+    }
+
 }
 

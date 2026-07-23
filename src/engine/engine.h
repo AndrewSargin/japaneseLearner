@@ -16,7 +16,10 @@ class Engine {
         void loadSubtitles(const std::string& filepath);
         // Searches for a text in subtitles by a given time
         std::string getPhraseAtTime(double time);
-
+        // Outputs processed word from text
+        void printCurrentWords(const std::string& phrase);
+        // Reinitializes tokenizer with active chosen dictionary
+        void changeDictionary(std::string dictName);
 
     private:
         // Stores subtitles
