@@ -1,4 +1,5 @@
 import os
+import sqlite3
 import helpingFuncs as helpers
 
 from pathlib import Path
@@ -55,5 +56,7 @@ Path(db_DIR).unlink(missing_ok=True)
 
 directories = {"jmdict": jmDictDirs, "kanji": kanjiLevelsFiles, "vocab": vocabLevelFiles}
 
-dbConn = helpers.create_tables(db_DIR)
+db = sqlite3.connect(db_DIR)
+dbConn = db.cursor()
+helpers.create_tables(dbConn)
 helpers.fillDatabase(dbConn, directories)

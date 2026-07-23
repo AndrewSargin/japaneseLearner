@@ -34,6 +34,7 @@ def download(url, directory):
         print(f"Download error: {e}")
         return False;
 
+# Gets text from jmdict files
 def extract_text(item):
     if (isinstance(item, str)):
        return item
@@ -73,10 +74,7 @@ def unzip_and_delete_many(zips):
     return extracted
 
 # Creating database files
-def create_tables(db_path):
-    db = sqlite3.connect(db_path)
-
-    cur = db.cursor()
+def create_tables(cur):
 
     cur.execute('''
         CREATE TABLE words (
@@ -99,8 +97,6 @@ def create_tables(db_path):
 
     cur.execute('CREATE INDEX IF NOT EXISTS idx_kanji ON words(kanji);')
     cur.execute('CREATE INDEX IF NOT EXISTS idx_reading ON words(reading);')
-
-    return db
 
 # Filling up the dictionary
 # External cycle for all downloaded languages
@@ -168,9 +164,10 @@ def get_kanji_char(outfile):
 def database_write_levels(cur, level, kanji):
     cur.execute('SELECT COUNT(*) FROM words WHERE kanji = ?', (kanji,))
     if(cur.fetchone()[0] == 0):
-        print("Не нашел")
+        print("Not found")
     cur.execute('UPDATE words SET jlpt_level = ? WHERE kanji = ?', (level, kanji)) 
 
+# Cycles through kanji and vocabulary files that contain jlpt levels
 def add_jlpt_levels(cur, kanji, vocab):
     # Adding kanji levels to database
     for file in kanji:
@@ -184,7 +181,6 @@ def add_jlpt_levels(cur, kanji, vocab):
         level = int(os.path.basename(file)[1:2])
         with open (file, 'r', encoding='cp932') as outfile:
             for characters in get_kanji_char(outfile):
-                print(characters)
                 database_write_levels(cur, level, characters)
 
 # Adding vocabulary levels to database
