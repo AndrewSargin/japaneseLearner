@@ -1,5 +1,4 @@
 import json
-import sqlite3
 import glob
 import zipfile
 import requests
@@ -122,12 +121,14 @@ def fill_database_jmdict(cur, extract_dir):
                     cur.execute('SELECT id FROM words WHERE kanji = ?', (kanji,))
 
                     row = cur.fetchone()
+                    # If a word already exists in database, add only translation
                     if(row):
                         word_id = row[0]
                         cur.execute(
                             'INSERT INTO translations (language, meaning, word_id) VALUES (?, ?, ?)',
                             (language, translation, word_id)
                         )
+                    # Add a word an it's translation to database
                     else:
                      
                         cur.execute(
@@ -191,6 +192,3 @@ def fillDatabase(dbConn, directories):
 
     add_jlpt_levels(cursor, directories.get("kanji"), directories.get("vocab"))
     dbConn.commit()
-
-    dbConn.close()
-
