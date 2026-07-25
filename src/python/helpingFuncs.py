@@ -150,7 +150,11 @@ def create_indices(cur):
     cur.execute('CREATE INDEX idx_kana_text ON kana(text);')
     cur.execute('CREATE INDEX idx_translation_lang ON translation(language);')
     cur.execute('CREATE INDEX idx_translation_meaning ON translation(meaning_id);')
-    
+    cur.execute('CREATE INDEX idx_kanji_entry ON kanji(entry_id);')
+    cur.execute('CREATE INDEX idx_kana_entry ON kana(entry_id);')
+    cur.execute('CREATE INDEX idx_meaning_entry ON meaning(entry_id);')
+    cur.execute('CREATE INDEX idx_translation_meaning_lang ON translation(meaning_id, language);')
+    cur.execute('ANALYZE;')
 """
 # Creating database files
 def create_tables(cur):
