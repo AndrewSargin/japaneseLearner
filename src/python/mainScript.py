@@ -8,7 +8,7 @@ from pathlib import Path
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 db_DIR = os.path.join(PROJECT_DIR, "data/dictionary.db")
-jmDict_DIR = Path(os.path.join(PROJECT_DIR, "data/yomitan"))
+jmDict_DIR = Path(os.path.join(PROJECT_DIR, "data/jmdict"))
 jlptLevels_DIR = Path(os.path.join(PROJECT_DIR, "data/tanos_co_uk"))
 jlptVocab_DIR = Path(os.path.join(jlptLevels_DIR, "vocabulary"))
 jlptKanji_DIR = Path(os.path.join(jlptLevels_DIR, "kanji"))
@@ -19,11 +19,11 @@ jlptLevels_DIR.mkdir(parents=True, exist_ok=True)
 jlptVocab_DIR.mkdir(parents=True, exist_ok=True)
 jlptKanji_DIR.mkdir(parents=True, exist_ok=True)
 
+#TODO: check language names
+languages = ["rus", "eng"]
+
 # Urls for JMdict
-urls_yomitan = [
-    "https://github.com/yomidevs/jmdict-yomitan/releases/latest/download/JMdict_russian.zip",
-    "https://github.com/yomidevs/jmdict-yomitan/releases/latest/download/JMdict_english.zip"
-    ]
+urls_jmdict = helpers.get_jmdict_urls(languages)
 
 # Urls for vocabulary of jlpt levels
 urls_jlpt_vocab = [
@@ -44,7 +44,7 @@ urls_jlpt_kanji = [
     ]
 
 # Download all files
-jmDictFiles = helpers.download_many(urls_yomitan, jmDict_DIR)
+jmDictFiles = helpers.download_many(urls_jmdict, jmDict_DIR)
 kanjiLevelsFiles = helpers.download_many(urls_jlpt_kanji, jlptKanji_DIR)
 vocabLevelFiles = helpers.download_many(urls_jlpt_vocab, jlptVocab_DIR)
 
@@ -57,7 +57,12 @@ Path(db_DIR).unlink(missing_ok=True)
 directories = {"jmdict": jmDictDirs, "kanji": kanjiLevelsFiles, "vocab": vocabLevelFiles}
 
 db = sqlite3.connect(db_DIR)
-dbConn = db.cursor()
-helpers.create_tables(dbConn)
-helpers.fillDatabase(dbConn, directories)
-dbConn.close()
+dbCursor = db.cursor()
+helpers.create_tables(dbCursor)
+helpers.setup_database(dbCursor)
+helpers.fill_database_jmdict(dbCursor, directories.get("jmdict"))
+db.commit()
+helpers.create_indices(dbCursor)
+helpers.add_jlpt_levels(dbCursor, directories.get("kanji"), directories.get("vocab"))
+db.commit()
+db.close()

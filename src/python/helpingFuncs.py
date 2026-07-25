@@ -6,6 +6,7 @@ from tqdm import tqdm
 from urllib.parse import urlparse
 import os
 from pathlib import Path
+import databaseHelpers as dataHelp
 
 # Downloading packages in selected languages
 def download(url, directory):
@@ -72,6 +73,85 @@ def unzip_and_delete_many(zips):
             Path(file).unlink(missing_ok=True)
     return extracted
 
+# Creating all tables and indexes
+def create_tables(cur):
+
+    cur.execute('''
+        CREATE TABLE entry (
+            id INTEGER PRIMARY KEY,
+            jlpt_level INTEGER DEFAULT 0
+        );
+    ''')
+
+    cur.execute('''
+        CREATE TABLE kanji (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            entry_id INTEGER NOT NULL,
+            text TEXT not NULL,
+            common BOOLEAN NOT NULL,
+
+            FOREIGN KEY (entry_id) REFERENCES entry(id)
+        );
+    ''')
+
+    cur.execute('''
+        CREATE TABLE kana (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            entry_id INTEGER NOT NULL,
+            text TEXT not NULL,
+            common BOOLEAN NOT NULL,
+
+            FOREIGN KEY (entry_id) REFERENCES entry(id)
+        );
+    ''')
+
+    cur.execute('''
+        CREATE TABLE meaning (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            entry_id INTEGER NOT NULL,
+            order_no INTEGER NOT NULL,
+
+            FOREIGN KEY (entry_id) REFERENCES entry(id)
+        );
+    ''')
+
+    cur.execute(''' 
+        CREATE TABLE translation (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            meaning_id INTEGER NOT NULL,
+            language TEXT NOT NULL,
+            text TEXT NOT NULL,
+
+            FOREIGN KEY (meaning_id) REFERENCES meaning(id)
+        );
+    ''')
+
+    cur.execute('''
+        CREATE TABLE tag (
+            id INTEGER PRIMARY KEY,
+            tag TEXT UNIQUE NOT NULL
+        );
+    ''')
+
+    cur.execute('''
+        CREATE TABLE meaning_pos (
+            meaning_id INTEGER NOT NULL,
+            pos_id INTEGER NOT NULL,
+
+            PRIMARY KEY (meaning_id, pos_id),
+
+            FOREIGN KEY (meaning_id) REFERENCES meaning(id),
+            FOREIGN KEY (pos_id) REFERENCES pos(id)
+        );
+    ''')
+
+def create_indices(cur):
+    cur.execute('CREATE INDEX idx_kanji_text ON kanji(text);')
+    cur.execute('CREATE INDEX idx_kana_text ON kana(text);')
+    cur.execute('CREATE INDEX idx_translation_lang ON translation(language);')
+    cur.execute('CREATE INDEX idx_translation_meaning ON translation(meaning_id);')
+    
+"""
 # Creating database files
 def create_tables(cur):
 
@@ -96,10 +176,30 @@ def create_tables(cur):
 
     cur.execute('CREATE INDEX IF NOT EXISTS idx_kanji ON words(kanji);')
     cur.execute('CREATE INDEX IF NOT EXISTS idx_reading ON words(reading);')
+"""
 
+def fill_database_jmdict(cur, directories):
+    cache = dataHelp.CacheImporter()
+    cache.load_db_cache(cur)
+    for langDir in directories:
+        for file in glob.glob(os.path.join(langDir, '*.json')):
+            with open(file, 'r', encoding='UTF-8') as f:
+
+                data = json.load(f)
+                count = len(data['words'])
+                for idx, word in enumerate(data['words']):
+                    if idx%1000 == 0:
+                        print(f'{idx} / {count}')
+
+                    dataHelp.insert_entry(cur, word['id'], cache)
+                    dataHelp.insert_kanji(cur, word['id'], word['kanji'], cache)
+                    dataHelp.insert_kana(cur, word['id'], word['kana'], cache)
+                    dataHelp.insert_meaning(cur, word['id'], word['sense'], cache)
+
+"""
 # Filling up the dictionary
 # External cycle for all downloaded languages
-def fill_database_jmdict(cur, extract_dir):
+/*def fill_database_jmdict(cur, extract_dir):
     for language_dir in extract_dir:
         print (language_dir)
         language = os.path.basename(language_dir).removeprefix('JMdict_')
@@ -143,6 +243,7 @@ def fill_database_jmdict(cur, extract_dir):
                             'INSERT INTO translations (language, meaning, word_id) VALUES (?, ?, ?)',
                             (language, translation, word_id)
                         )
+"""
 
 # Searches for lines with "sS'q'" in file and yields each next line
 def get_kanji_char(outfile):
@@ -163,10 +264,13 @@ def get_kanji_char(outfile):
 
 # Find entry in database and add a jlpt level
 def database_write_levels(cur, level, kanji):
-    cur.execute('SELECT COUNT(*) FROM words WHERE kanji = ?', (kanji,))
-    if(cur.fetchone()[0] == 0):
-        print("Not found")
-    cur.execute('UPDATE words SET jlpt_level = ? WHERE kanji = ?', (level, kanji)) 
+    cur.execute('''UPDATE entry SET jlpt_level = ? 
+        WHERE id IN (
+            SELECT entry_id FROM kanji WHERE text = ?)''',
+        (level, kanji))
+    if cur.rowcount == 0:
+        print('Not found')
+    else: print ('ok')
 
 # Cycles through kanji and vocabulary files that contain jlpt levels
 def add_jlpt_levels(cur, kanji, vocab):
@@ -185,10 +289,30 @@ def add_jlpt_levels(cur, kanji, vocab):
                 database_write_levels(cur, level, characters)
 
 # Adding vocabulary levels to database
-def fillDatabase(dbConn, directories):
-    cursor = dbConn.cursor()
-    fill_database_jmdict(cursor, directories.get("jmdict"))
-    dbConn.commit()
+def setup_database(cursor):
 
-    add_jlpt_levels(cursor, directories.get("kanji"), directories.get("vocab"))
-    dbConn.commit()
+    cursor.execute('PRAGMA journal_mode=OFF')
+    cursor.execute('PRAGMA synchronous=OFF')
+    cursor.execute('PRAGMA temp_store=MEMORY')
+    cursor.execute('PRAGMA cache_size=-100000')
+
+def get_jmdict_urls(languages):
+    githubApiUrl = "https://api.github.com/repos/scriptin/jmdict-simplified/releases/latest"
+
+    release = requests.get(githubApiUrl).json()
+    tagname = release["tag_name"]
+    urls = []
+
+    for asset in release["assets"]:
+        for lang in languages:
+            if asset["name"].startswith(f"jmdict-{lang}-{tagname}") and asset["name"].endswith(".json.zip"):
+                urls.append(asset["browser_download_url"])
+
+    return urls
+
+    
+
+
+
+
+

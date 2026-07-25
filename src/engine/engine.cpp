@@ -74,7 +74,7 @@ void Engine::printCurrentWords(const std::string& phrase){
         
         Word word = dictionary.getEntryByKanji(token.dictForm);
         if(word.kanji.length() != 0){
-            std::cout << " " << word.meanings.at(0).meaning;
+            std::cout << " " << word.meanings.at(1).meaning;
             
             if(word.jlptLevel != 0) 
                 std::cout << " N" << word.jlptLevel; 
