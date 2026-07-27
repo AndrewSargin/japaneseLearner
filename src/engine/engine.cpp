@@ -71,7 +71,7 @@ void Engine::printCurrentWords(const std::string& phrase){
     for (Token token : tokens){
 
         std::cout << token.POS << " " << token.reading << " " << token.dictForm;
-        
+
         Word word = dictionary.getEntryByKanji(token.dictForm);
         if(word.kanji.length() != 0){
             std::cout << " " << word.meanings.at(1).meaning;

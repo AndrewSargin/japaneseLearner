@@ -20,10 +20,13 @@ Dictionary::~Dictionary(){
 
 // Searching for word in japanese by its kanji
 Word Dictionary::getEntryByKanji(const std::string& kanji){
-    std::string sql = "SELECT w.kanji, w.reading, w.jlpt_level, t.language, t.meaning\n"
-                      "FROM words w\n"
-                      "JOIN translations t ON w.id = t.word_id\n"
-                      "WHERE w.kanji = ?";
+    std::string sql = "SELECT k.text, ka.text, e.jlpt_level, t.language, t.text\n"
+                      "FROM entry e\n"
+                      "JOIN kanji k ON k.entry_id = e.id\n"
+                      "JOIN kana ka ON ka.entry_id = e.id\n"
+                      "JOIN meaning m ON m.entry_id = e.id\n"
+                      "JOIN translation t ON t.meaning_id = m.id\n"
+                      "WHERE k.text = ?";
     
     sqlite3_stmt* stmt;
 
@@ -46,9 +49,12 @@ Word Dictionary::getEntryByKanji(const std::string& kanji){
 
 // Searching for a word by its reading (probably useless)
 Word Dictionary::getEntryByReading(const std::string& reading ){
-    std::string sql = "SELECT w.kanji, w.reading, w.jlpt_level, t.language, t.meaning\n"
-                      "FROM words w\n"
-                      "JOIN translations t ON w.id = t.word_id\n"
+    std::string sql = "SELECT k.text, ka.text, e.jlpt_level, t.language, t.text\n"
+                      "FROM entry e\n"
+                      "JOIN kanji k ON k.entry_id = e.id\n"
+                      "JOIN kana ka ON ka.entry_id = e.id\n"
+                      "JOIN meaning m ON m.entry_id = e.id\n"
+                      "JOIN translations t ON t.meaning_id = e.id\n"
                       "WHERE w.reading = ?";
 
     sqlite3_stmt* stmt;
