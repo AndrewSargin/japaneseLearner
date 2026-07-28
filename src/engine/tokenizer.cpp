@@ -49,6 +49,7 @@ std::vector<Token> Tokenizer::getByUnidic(const MeCab::Node *node){
 
         std::vector<std::string> columns = splitByComma(feature);
 
+        if (columns.size() < 8 || columns[0] == "補助記号") continue;
         token.POS = columns[0];
         token.dictForm = columns[7];
         token.reading = kataToHira(columns[9]);

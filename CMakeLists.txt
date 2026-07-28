@@ -3,7 +3,12 @@ project (japanese-learner)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
+find_package(SQLite3 REQUIRED)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 add_executable(japanese-learner
     src/main.cpp
@@ -11,8 +16,14 @@ add_executable(japanese-learner
     src/engine/dictionary.cpp
     src/engine/engine.cpp
     src/engine/tokenizer.cpp
+    src/ui/mpv_widget.cpp
+    src/ui/main_window.cpp
 )
 
-find_package(SQLite3 REQUIRED)
 target_include_directories(japanese-learner PRIVATE /usr/include)
-target_link_libraries(japanese-learner SQLite3::SQLite3 mecab)
+target_link_libraries(japanese-learner
+    Qt6::Widgets
+    SQLite3::SQLite3
+    mecab
+    mpv
+)
