@@ -8,7 +8,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(SQLite3 REQUIRED)
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGL OpenGLWidgets)
 
 add_executable(japanese-learner
     src/main.cpp
@@ -18,11 +18,14 @@ add_executable(japanese-learner
     src/engine/tokenizer.cpp
     src/ui/mpv_widget.cpp
     src/ui/main_window.cpp
+    src/ui/subtitle_widget.cpp
 )
 
 target_include_directories(japanese-learner PRIVATE /usr/include)
 target_link_libraries(japanese-learner
     Qt6::Widgets
+    Qt6::OpenGL
+    Qt6::OpenGLWidgets
     SQLite3::SQLite3
     mecab
     mpv

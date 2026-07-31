@@ -4,20 +4,22 @@
 #include <QApplication>
 #include "ui/main_window.h"
 
-/*
+
 int main (int argc, char *argv[])
 {
     QApplication app(argc, argv);
-
+    
     MainWindow window;
     window.setWindowTitle("Japanese Learner");
     window.resize(1280, 720);
     
+    window.show();
+
     return app.exec();
     
-}*/
+}
 
-int main () {
+/*int main () {
 
     // Paths used for testing
     std::string testPath = "/home/andrew/projects/japanese-learner/data/test.srt"; 
@@ -34,4 +36,4 @@ int main () {
     
     return 0;
 }
-
+*/

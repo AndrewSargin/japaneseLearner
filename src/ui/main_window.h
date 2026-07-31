@@ -3,18 +3,22 @@
 #include <QMainWindow>
 #include <qmainwindow.h>
 #include "mpv_widget.h"
+#include "subtitle_widget.h"
 #include "../engine/engine.h"
 
 class MainWindow : public QMainWindow {
     
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         MainWindow(QWidget* parent = nullptr);
         ~MainWindow();
 
     private: 
-        Mpv* mpv;
+        MpvWidget* m_mpv;
+        QLabel* subWid;
+        //SubtitleWidget* subWid;
         Engine* engine;
-        void updateSubtitle();
+    private Q_SLOTS:
+        void updateSubtitle(double time);
 };
