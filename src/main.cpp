@@ -2,19 +2,28 @@
 // For ipadic to work
 
 #include <QApplication>
-#include "ui/main_window.h"
+#include <QQmlApplicationEngine>
+#include <QtQml>
+#include <qqml.h>
+#include "src/ui/mpv_widget.h"
+#include "src/ui/engine_qt.h"
 
 
 int main (int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    
-    MainWindow window;
-    window.setWindowTitle("Japanese Learner");
-    window.resize(1280, 720);
-    
-    window.show();
 
+    std::string db_path = "/home/andrew/projects/japanese-learner/data/dictionary.db";
+    std::string unidic_path = "-d /usr/lib/mecab/dic/unidic";
+
+
+    EngineQt* engineQt = new EngineQt(db_path, unidic_path, "unidic");
+    
+    qmlRegisterType<MpvWidget>("JapaneseLearner", 1, 0, "MpvWidget");
+
+    QQmlApplicationEngine qmlEngine;
+    qmlEngine.load(QUrl("qrc:/JapaneseLearner/src/ui/main.qml"));
+    qmlEngine.rootContext()->setContextProperty("engine", engineQt);
     return app.exec();
     
 }

@@ -34,7 +34,7 @@ std::string Engine::getPhraseAtTime(double time){
     while(!found){
         
         if(left > right) {
-            std::cout << "no subs at this mark" << std::endl;
+            //std::cout << "no subs at this mark" << std::endl;
             return "";
         }
         else {
