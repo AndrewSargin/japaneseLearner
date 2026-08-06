@@ -62,13 +62,6 @@ Window {
             x: 0
             y: 0
 
-            FrameAnimation {
-                running: true
-                onTriggered: {
-                subtitleText.text = engine.getPhraseAtTime(mpv.getCurrentTime())
-                }
-            }
-
             Text {
                 id: subtitleText
                 anchors.bottom: parent.bottom
@@ -82,7 +75,6 @@ Window {
                 player.setWidget(this)
             }
             onPositionChanged: function(time) {
-                console.log("time:", time)
                 subtitleText.text = engine.getPhraseAtTime(time)
             }
         }
@@ -93,6 +85,42 @@ Window {
             id: controls
             Layout.fillWidth: true
             Layout.preferredHeight: 60
+
+            ColumnLayout {
+                anchors.fill: parent
+
+                RowLayout {
+                    Slider {
+                        id: videoPosition
+
+                        Layout.fillWidth: true
+                        from: 0
+                        value: player.position
+                        to: player.duration
+
+                        onMoved: player.seek(value)
+                    }
+
+                }
+
+                RowLayout {
+                    Button {
+                        text: "play"
+                        onClicked: player.togglePlayPause()
+                    }
+
+                    Slider {
+                        id: volume
+                        from: 0
+                        value: 25
+                        to: 100
+                        onMoved: player.setVolume(value)
+                    }
+
+                }
+            }
+
+
         }
 
         Rectangle {

@@ -21,11 +21,13 @@ class MpvWidget : public QQuickFramebufferObject {
         void loadVideo(const std::string& path);
         Q_INVOKABLE double getCurrentTime();
         void setSubtitle(const std::string& text);
+        void togglePlayPause();
+        void setVolume(double volume);
+        void setVideoPosition(double position);
 
     Q_SIGNALS:
-        void durationChanged(int value);
-        void positionChanged(int value);
-        void updateTime(double time);
+        void durationChanged(double value);
+        void positionChanged(double value);
 
     private Q_SLOTS:
         void onMpvEvents();

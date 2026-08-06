@@ -28,6 +28,8 @@ MpvWidget::MpvWidget(QQuickItem* parent) : QQuickFramebufferObject(parent)
     mpv_observe_property(mpv, 0, "time-pos", MPV_FORMAT_DOUBLE);
     mpv_observe_property(mpv, 0, "duration", MPV_FORMAT_DOUBLE);
 
+    mpv_set_wakeup_callback(mpv, wakeup, this);
+
 }
 
 MpvWidget::~MpvWidget(){
@@ -101,4 +103,17 @@ void MpvWidget::maybeUpdate(){
     update();
 }
 
+void MpvWidget::togglePlayPause(){
+    int paused;
+    mpv_get_property(mpv, "pause", MPV_FORMAT_FLAG, &paused);
+    paused = !paused;
+    mpv_set_property(mpv, "pause", MPV_FORMAT_FLAG, &paused);
+}
 
+void MpvWidget::setVolume(double volume){
+    mpv_set_property(mpv, "volume", MPV_FORMAT_DOUBLE, &volume);
+}
+
+void MpvWidget::setVideoPosition(double position){
+    mpv_set_property(mpv, "time-pos", MPV_FORMAT_DOUBLE, &position);
+}
