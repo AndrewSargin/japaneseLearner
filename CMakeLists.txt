@@ -16,16 +16,15 @@ add_executable(japanese-learner
     src/engine/dictionary.cpp
     src/engine/engine.cpp
     src/engine/tokenizer.cpp
-    src/ui/mpv_widget.cpp
-    src/ui/main_window.cpp
-    src/ui/subtitle_widget.cpp
-    src/ui/mpv_renderer.cpp
-    src/ui/engine_qt.cpp
+    src/qt/mpv_widget.cpp
+    src/qt/mpv_renderer.cpp
+    src/qt/engine_qt.cpp
+    src/qt/player_qt.cpp
 )
 
 target_include_directories(japanese-learner PRIVATE
     /usr/include
-    src/ui
+    src/qt
     src/engine
 )
 target_link_libraries(japanese-learner PRIVATE

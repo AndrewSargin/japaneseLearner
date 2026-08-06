@@ -28,10 +28,6 @@ MpvWidget::MpvWidget(QQuickItem* parent) : QQuickFramebufferObject(parent)
     mpv_observe_property(mpv, 0, "time-pos", MPV_FORMAT_DOUBLE);
     mpv_observe_property(mpv, 0, "duration", MPV_FORMAT_DOUBLE);
 
-    QTimer::singleShot(100, this, [this]() {
-        loadVideo("/home/andrew/Downloads/Rezero.mkv");
-    });
-
 }
 
 MpvWidget::~MpvWidget(){

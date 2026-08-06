@@ -3,5 +3,6 @@ data/jmdict/
 data/test.srt
 data/dictionary.db
 data/tanos_co_uk/
+data/video
 build/
 src/python/__pycache__/

@@ -1,6 +1,5 @@
 #pragma once
 #include <QObject>
-#include <qobject.h>
 #include <qtmetamacros.h>
 #include "../engine/engine.h"
 

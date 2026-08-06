@@ -22,7 +22,12 @@ std::vector<Subtitle> SubtitleParser::parse (const std::string& filepath){
     std::ifstream in (filepath);
     if (in.is_open()) {
         while (std::getline(in, line)) {
-            
+          
+            // bruh, forgot about carriage return in dos style files. FIXED
+            if (!line.empty() && line.back() == '\r') {
+                line.pop_back();
+            }
+
             if (line.empty()) {
                 
                 subs.push_back(current_sub);
@@ -49,8 +54,11 @@ std::vector<Subtitle> SubtitleParser::parse (const std::string& filepath){
 
         }   
 
-        if(!current_sub.text.empty())
+        if(!current_sub.text.empty()) {
             subs.push_back(current_sub);
+        }
+
+
 
     }
 

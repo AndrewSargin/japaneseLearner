@@ -5,8 +5,9 @@
 #include <QQmlApplicationEngine>
 #include <QtQml>
 #include <qqml.h>
-#include "src/ui/mpv_widget.h"
-#include "src/ui/engine_qt.h"
+#include "qt/mpv_widget.h"
+#include "qt/engine_qt.h"
+#include "qt/player_qt.h"
 
 
 int main (int argc, char *argv[])
@@ -18,12 +19,16 @@ int main (int argc, char *argv[])
 
 
     EngineQt* engineQt = new EngineQt(db_path, unidic_path, "unidic");
+
+    PlayerQt* playerQt = new PlayerQt();
     
     qmlRegisterType<MpvWidget>("JapaneseLearner", 1, 0, "MpvWidget");
 
     QQmlApplicationEngine qmlEngine;
-    qmlEngine.load(QUrl("qrc:/JapaneseLearner/src/ui/main.qml"));
     qmlEngine.rootContext()->setContextProperty("engine", engineQt);
+    qmlEngine.rootContext()->setContextProperty("player", playerQt);
+
+    qmlEngine.load(QUrl("qrc:/JapaneseLearner/src/ui/main.qml"));
     return app.exec();
     
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "src/ui/mpv_widget.h"
+#include "mpv_widget.h"
 #include <QQuickFramebufferObject>
 #include <QOpenGLFramebufferObject>
 #include <mpv/render_gl.h>

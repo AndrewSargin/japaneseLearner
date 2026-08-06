@@ -1,5 +1,4 @@
 #include "engine_qt.h"
-#include <iostream>
 
 EngineQt::EngineQt(const std::string& db_path,
                    const std::string& dict_path,
@@ -13,7 +12,8 @@ EngineQt::EngineQt(const std::string& db_path,
 
 void EngineQt::loadSubtitles(const QString& path){
     // For now
-    std::string pathstr = "/home/andrew/projects/japanese-learner/data/test.srt";
+    std::string pathstr = "/home/andrew/projects/japanese-learner/data/video/Subtitles/jap.srt";
+    //std::string pathstr = "/home/andrew/projects/japanese-learner/data/test.srt";
     engine.loadSubtitles(pathstr);
     //engine.loadSubtitles(path.toStdString());
 }

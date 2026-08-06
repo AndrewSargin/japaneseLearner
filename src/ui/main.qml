@@ -33,7 +33,10 @@ Window {
                 anchors.centerIn: parent
                 spacing: 10
 
-                Button { text: "Load Video" }
+                Button {
+                    text: "Load Video"
+                    onClicked: player.loadVideo("/home/andrew/projects/japanese-learner/data/video/test.mkv")
+                }
                 Button { text: "Load Subs (Original)" }
                 Button { text: "Load Subs (Translation)" }
 
@@ -44,8 +47,10 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.rightMargin: 10
 
-                Text { color: "white"
-                text: "JapaneseLearner" }
+                Text {
+                    color: "white"
+                    text: "JapaneseLearner"
+                }
             }
 
         }
@@ -73,6 +78,9 @@ Window {
                 text: ""
             }
 
+            Component.onCompleted: {
+                player.setWidget(this)
+            }
             onPositionChanged: function(time) {
                 console.log("time:", time)
                 subtitleText.text = engine.getPhraseAtTime(time)
