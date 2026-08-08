@@ -21,6 +21,8 @@ class Engine {
         // Reinitializes tokenizer with active chosen dictionary
         void changeDictionary(std::string dictName);
 
+        std::vector<Word> getWordsFromPhrase(const std::string& phrase);
+
     private:
         // Stores subtitles
         std::vector<Subtitle> subtitles;

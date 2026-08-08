@@ -89,3 +89,17 @@ void Engine::printCurrentWords(const std::string& phrase){
 
 }
 
+std::vector<Word> Engine::getWordsFromPhrase(const std::string& phrase){
+    std::vector<Token> tokens = tokenizer.getTokens(phrase);
+
+    std::vector<Word> words;
+
+    for (Token token : tokens) {
+
+        Word word = dictionary.getEntryByKanji(token.dictForm);
+        words.push_back(word);
+    }
+
+    return words;
+}
+

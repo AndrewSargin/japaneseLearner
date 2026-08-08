@@ -80,6 +80,7 @@ Window {
             }
             onPositionChanged: function(time) {
                 subtitleText.text = engine.getPhraseAtTime(time)
+                wordList.model = engine.getWordsAtTime(time)
             }
         }
          
@@ -131,6 +132,61 @@ Window {
             id: wordBreakdown
             Layout.fillWidth: true
             Layout.preferredHeight: 150
+
+            Row {
+
+                anchors.fill: parent
+                spacing: 8 
+                padding: 10
+
+                Repeater {
+                    id: wordList
+
+                    model: []
+
+                    delegate: Rectangle {
+                        width: 120
+                        height: 130
+                        color: "#2a2a2a"
+                        radius: 8
+
+                        Column {
+                            anchors.centerIn: parent
+                            spacing: 4
+
+                            Text {
+                                text: modelData.kanji
+                                color: "#aaaaaa"
+                                font.pixelSize: 12
+                            }
+
+                            Text {
+                                text: modelData.reading
+                                color: "#aaaaaa"
+                                font.pixelSize: 12
+                            }
+
+                            Text {
+                                text: modelData.meaning
+                                color: "white"
+                                font.pixelSize: 12
+                            }
+
+                            Text {
+                                text: "N" + modelData.jlpt
+                                color: "white"
+                                font.pixelSize: 11
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+
+            }
         }
     }
 
