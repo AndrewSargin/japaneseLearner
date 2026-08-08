@@ -1,4 +1,5 @@
 #include "engine_qt.h"
+#include <QUrl>
 
 EngineQt::EngineQt(const std::string& db_path,
                    const std::string& dict_path,
@@ -6,16 +7,11 @@ EngineQt::EngineQt(const std::string& db_path,
                    QObject* parent) :
                    engine(db_path, dict_path, dictionary),
                    QObject(parent){
-    //For now
-    loadSubtitles("sdfs");
 }
 
 void EngineQt::loadSubtitles(const QString& path){
-    // For now
-    std::string pathstr = "/home/andrew/projects/japanese-learner/data/video/Subtitles/jap.srt";
-    //std::string pathstr = "/home/andrew/projects/japanese-learner/data/test.srt";
-    engine.loadSubtitles(pathstr);
-    //engine.loadSubtitles(path.toStdString());
+    QUrl url(path);
+    engine.loadSubtitles(url.toLocalFile().toStdString());
 }
 
 QString EngineQt::getPhraseAtTime(double time){

@@ -11,6 +11,7 @@ PlayerQt::PlayerQt(QObject* parent) :
 void PlayerQt::loadVideo(const QString& videoPath){
 
     std::string path = videoPath.toStdString();
+    std::cout << path << std::endl;
     std::cout << "load";
     if (mpv != nullptr)
         mpv->loadVideo(path);

@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Window 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Dialogs
 import JapaneseLearner 1.0
 
 Window {
@@ -35,9 +36,12 @@ Window {
 
                 Button {
                     text: "Load Video"
-                    onClicked: player.loadVideo("/home/andrew/projects/japanese-learner/data/video/test.mkv")
+                    onClicked: videoDialog.open()
                 }
-                Button { text: "Load Subs (Original)" }
+                Button {
+                    text: "Load Subs (Original)"
+                    onClicked: subsDialog.open()
+                }
                 Button { text: "Load Subs (Translation)" }
 
             }
@@ -128,5 +132,19 @@ Window {
             Layout.fillWidth: true
             Layout.preferredHeight: 150
         }
+    }
+
+    FileDialog {
+        id: videoDialog
+        title: "Select Video"
+        nameFilters: ["Video files (*.mkv *.mp4 *.avi *.mov)"]
+        onAccepted: player.loadVideo(selectedFile)
+    }
+
+    FileDialog {
+        id: subsDialog
+        title: "Select Subs"
+        nameFilters: ["Subtitle files (*.srt)"]
+        onAccepted: engine.loadSubtitles(selectedFile)
     }
 }
