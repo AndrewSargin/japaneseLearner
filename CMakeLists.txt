@@ -40,5 +40,8 @@ target_link_libraries(japanese-learner PRIVATE
 
 qt_add_qml_module(japanese-learner
     URI JapaneseLearner
-    QML_FILES src/ui/main.qml
+    QML_FILES
+        src/ui/main.qml
+        src/ui/components/ButtonStyled.qml
+
 )

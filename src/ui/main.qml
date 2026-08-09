@@ -3,6 +3,7 @@ import QtQuick.Window 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
+import "components"
 import JapaneseLearner 1.0
 
 Window {
@@ -29,26 +30,11 @@ Window {
                 anchors.leftMargin: 10
                 spacing: 8
                             
-                Button {
+                ButtonStyled {
                     id: settingsButton 
                     text: "⚙"
                     height: 24 
                     width: 24
-                    
-                    contentItem: Text {                       
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        text: settingsButton.text
-                        color: "#a1a1aa"
-                        font.pixelSize: 12
-                    }
-
-                    background: Rectangle {
-                        radius: 4
-                        color: "#18181B"
-                        border.color: "#27272a"
-                        border.width: 1
-                    }
                 }
             }
 
@@ -56,65 +42,19 @@ Window {
                 anchors.centerIn: parent
                 spacing: 10
 
-                Button {
+                ButtonStyled {
                     id: loadVideoButton
                     text: "Load Video"
-
-                    contentItem: Text {
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        text: loadVideoButton.text
-                        color: "#f4f4f5"
-                        font.pixelSize: 12
-                    }
-
-                    background: Rectangle {
-                        radius: 4
-                        color: "#18181b"
-                        border.color: "#27272a"
-                        border.width: 1
-
-                    }
                     onClicked: videoDialog.open()
                 }
-                Button {
+                ButtonStyled {
                     id: loadOriginalSubsButton
                     text: "Load Subs (Original)"
-
-                    contentItem: Text {
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        text: loadOriginalSubsButton.text
-                        color: "#f4f4f5"
-                        font.pixelSize: 12
-                    }
-
-                    background: Rectangle {
-                        radius: 4
-                        color: "#18181b"
-                        border.color: "#27272a"
-                        border.width:1
-                    }
                     onClicked: subsDialog.open()
                 }
-                Button {
+                ButtonStyled {
                     id: loadTranslationSubsButton
                     text: "Load Subs (Translation)"
-
-                    contentItem: Text {
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        text: loadTranslationSubsButton.text
-                        color: "#f4f4f5"
-                        font.pixelSize: 12
-                    }
-
-                    background: Rectangle {
-                        radius: 4
-                        color: "#18181b"
-                        border.color: "#27272a"
-                        border.width: 1
-                    }
                 }
 
             }
