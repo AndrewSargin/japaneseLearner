@@ -35,41 +35,41 @@ Word Dictionary::getEntryByKanji(const std::string& kanji){
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
     int rc = sqlite3_bind_text(stmt, 1, kanji.c_str(), -1, SQLITE_STATIC);
 
-    if( rc != SQLITE_OK) {
+    if (rc != SQLITE_OK) {
         std::cout << "Error: " << sqlite3_errmsg(db) << std::endl;
     }
     else {
         word = findSqliteEntries(stmt);
     }
 
-    //std::cout << "Search is finished" << std::endl;
     return word;
 };
 
 
 // Searching for a word by its reading (probably useless)
-Word Dictionary::getEntryByReading(const std::string& reading ){
+Word Dictionary::getEntryByReading(const std::string& reading){
     std::string sql = "SELECT k.text, ka.text, e.jlpt_level, t.language, t.text\n"
                       "FROM entry e\n"
                       "JOIN kanji k ON k.entry_id = e.id\n"
                       "JOIN kana ka ON ka.entry_id = e.id\n"
                       "JOIN meaning m ON m.entry_id = e.id\n"
-                      "JOIN translations t ON t.meaning_id = e.id\n"
-                      "WHERE w.reading = ?";
+                      "JOIN translation t ON t.meaning_id = e.id\n"
+                      "WHERE ka.text = ?";
 
     sqlite3_stmt* stmt;
 
     Word word;
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
-    if(sqlite3_bind_text(stmt, 1, reading.c_str(), -1, SQLITE_STATIC) != SQLITE_OK) {
+    int rc = sqlite3_bind_text(stmt, 1, reading.c_str(), -1, SQLITE_STATIC);
+
+    if (rc != SQLITE_OK) {
         std::cout << "Error: " << sqlite3_errmsg(db) << std::endl;
     }
     else {
         word = findSqliteEntries(stmt);
     }
     
-    //std::cout << "Search is finished" << std::endl;
     return word;
     
 }

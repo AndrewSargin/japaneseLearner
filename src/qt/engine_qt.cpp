@@ -11,18 +11,27 @@ EngineQt::EngineQt(const std::string& db_path,
                    QObject(parent){
 }
 
-void EngineQt::loadSubtitles(const QString& path){
+void EngineQt::loadOriginalSubtitles(const QString& path){
     QUrl url(path);
-    engine.loadSubtitles(url.toLocalFile().toStdString());
+    engine.loadOriginalSubtitles(url.toLocalFile().toStdString());
 }
 
-QString EngineQt::getPhraseAtTime(double time){
-    std::string phrase = engine.getPhraseAtTime(time);
-    return QString::fromStdString(phrase);
+void EngineQt::loadTranslationSubtitles(const QString& path){
+    QUrl url(path);
+    engine.loadTranslationSubtitles(url.toLocalFile().toStdString());
+}
+
+QStringList EngineQt::getPhraseAtTime(double time){
+    std::vector<std::string> phrases = engine.getPhraseAtTime(time);
+    QStringList result;
+    for (std::string phrase : phrases) {
+        result.append(QString::fromStdString(phrase));
+    }
+    return result;
 }
 
 QVariantList EngineQt::getWordsAtTime(double time) {
-    std::string phrase = engine.getPhraseAtTime(time);
+    std::string phrase = engine.getPhraseAtTime(time)[0];
     std::vector<Word> words = engine.getWordsFromPhrase(phrase);
     
     QVariantList result;

@@ -45,8 +45,10 @@ QQuickFramebufferObject::Renderer* MpvWidget::createRenderer() const {
 
 void MpvWidget::loadVideo(const std::string& path){
 
-    const char *cmd[] = {"loadfile", path.c_str(), nullptr};
-    mpv_command(mpv, cmd);
+    QTimer::singleShot(0, this, [this, path]() {
+        const char *cmd[] = {"loadfile", path.c_str(), nullptr};
+        mpv_command(mpv, cmd);
+    });
 
 }
 

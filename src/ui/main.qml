@@ -55,6 +55,7 @@ Window {
                 ButtonStyled {
                     id: loadTranslationSubsButton
                     text: "Load Subs (Translation)"
+                    onClicked: translationSubsDialog.open()
                 }
 
             }
@@ -80,10 +81,20 @@ Window {
 
             Text {
                 id: subtitleText
-                anchors.bottom: parent.bottom
+                anchors.bottom: translationText.top
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: "white"
                 font.pixelSize: 24
+                text: ""
+            }
+
+            Text {
+                id: translationText
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottomMargin: 10
+                color: "white"
+                font.pixelSize: 18
                 text: ""
             }
 
@@ -91,7 +102,9 @@ Window {
                 player.setWidget(this)
             }
             onPositionChanged: function(time) {
-                subtitleText.text = engine.getPhraseAtTime(time)
+                var phrases = engine.getPhraseAtTime(time)
+                subtitleText.text = phrases[0] ?? ""
+                translationText.text = phrases[1] ?? ""
                 wordList.model = engine.getWordsAtTime(time)
             }
         }
@@ -257,6 +270,16 @@ Window {
         id: subsDialog
         title: "Select Subs"
         nameFilters: ["Subtitle files (*.srt)"]
-        onAccepted: engine.loadSubtitles(selectedFile)
+        onAccepted: engine.loadOriginalSubtitles(selectedFile)
     }
+
+        FileDialog {
+        id: translationSubsDialog
+        title: "Select Subs"
+        nameFilters: ["Subtitle files (*.srt)"]
+        onAccepted: engine.loadTranslationSubtitles(selectedFile)
+    }
+
+
+
 }

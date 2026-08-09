@@ -15,8 +15,9 @@ class EngineQt : public QObject {
         Q_INVOKABLE QVariantList getWordsAtTime(double time);
 
     public slots:
-        void loadSubtitles(const QString& path);
-        QString getPhraseAtTime(double time);
+        void loadOriginalSubtitles(const QString& path);
+        void loadTranslationSubtitles(const QString& path);
+        QStringList getPhraseAtTime(double time);
 
     private:
         Engine engine;

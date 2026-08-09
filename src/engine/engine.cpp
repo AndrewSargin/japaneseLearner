@@ -1,5 +1,6 @@
 #include <iostream>
 #include "engine.h"
+#include "subtitle_parser.h"
 #include "tokenizer.h"
 
 // Constructs a class and initializes a dictionary and tokenizer
@@ -13,47 +14,93 @@ Engine::~Engine(){
 
 }
 
-void Engine::loadSubtitles(const std::string& filepath){
+void Engine::loadOriginalSubtitles(const std::string& filepath){
    
-    subtitles.clear();
-    subtitles = SubtitleParser::parse(filepath);
+    originalSubtitles.clear();
+    originalSubtitles = SubtitleParser::parse(filepath);
 
+}
+
+void Engine::loadTranslationSubtitles(const std::string& filepath){
+
+    translationSubtitles.clear();
+    translationSubtitles = SubtitleParser::parse(filepath);
 }
 
 // For now the search is done by looking through the vector of subtitles
 // It's a binaty search now, but for a played video it's better to store an index
 // Also this method might not find subs that go parallel if such exist
 // In the future I plan to make a subtitle cache generation to store data in .db
-std::string Engine::getPhraseAtTime(double time){
+std::vector<std::string> Engine::getPhraseAtTime(double time){
 
-    int right = subtitles.size() - 1;
+    std::vector<std::string> phrases;
+
+    int right = originalSubtitles.size() - 1;
     int left = {0};
     int index;
     bool found = false;
 
+    // Cycle for original subs
     while(!found){
         
         if(left > right) {
             //std::cout << "no subs at this mark" << std::endl;
-            return "";
+            phrases.push_back("");
+            found = true;
         }
         else {
             index = left + (right - left) / 2;
 
-            if(time < subtitles[index].start_time){
+            if(time < originalSubtitles[index].start_time){
                 right = index - 1;
             }
-            else if(time > subtitles[index].end_time){
+            else if(time > originalSubtitles[index].end_time){
                 left = index + 1;
             }
-            else if(time >= subtitles[index].start_time && time <= subtitles[index].end_time){
+            else if(time >= originalSubtitles[index].start_time && time <= originalSubtitles[index].end_time){
                 found = true;
-                return subtitles[index].text;
+                phrases.push_back(originalSubtitles[index].text);
             }
             else {
                 found = true;
                 std::cout << "in if clause: no subs at this mark" << std::endl;
-                return "";
+                phrases.push_back("");
+            }
+
+        }
+
+    }
+
+    right = translationSubtitles.size() - 1;
+    left = 0;
+    index = 0;
+    found = false;
+
+    // Cycle for translation subs
+    while(!found){
+        
+        if(left > right) {
+            //std::cout << "no subs at this mark" << std::endl;
+            phrases.push_back("");
+            found = true;
+        }
+        else {
+            index = left + (right - left) / 2;
+
+            if(time < translationSubtitles[index].start_time){
+                right = index - 1;
+            }
+            else if(time > translationSubtitles[index].end_time){
+                left = index + 1;
+            }
+            else if(time >= translationSubtitles[index].start_time && time <= translationSubtitles[index].end_time){
+                found = true;
+                phrases.push_back(translationSubtitles[index].text);
+            }
+            else {
+                found = true;
+                std::cout << "in if clause: no subs at this mark" << std::endl;
+                phrases.push_back("");
             }
 
         }
@@ -61,7 +108,7 @@ std::string Engine::getPhraseAtTime(double time){
     }
 
     std::cout << "returning" << std::endl;
-    return "";
+    return phrases;
 }
 
 void Engine::printCurrentWords(const std::string& phrase){
@@ -97,6 +144,11 @@ std::vector<Word> Engine::getWordsFromPhrase(const std::string& phrase){
     for (Token token : tokens) {
 
         Word word = dictionary.getEntryByKanji(token.dictForm);
+
+        if (word.kanji.empty()) {
+            word =  dictionary.getEntryByReading(token.reading);
+        }
+
         words.push_back(word);
     }
 
