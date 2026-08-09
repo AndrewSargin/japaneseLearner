@@ -72,43 +72,64 @@ Window {
             }
         }
 
-        MpvWidget {
-            id: mpv
+        Item{
             Layout.fillWidth: true
             Layout.fillHeight: true
-            x: 0
-            y: 0
 
-            Text {
-                id: subtitleText
-                anchors.bottom: translationText.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                color: "white"
-                font.pixelSize: 24
-                text: ""
+            MpvWidget {
+                id: mpv
+                anchors.fill: parent
+
+
+                Component.onCompleted: {
+                    player.setWidget(this)
+                }
+                onPositionChanged: function(time) {
+                    var phrases = engine.getPhraseAtTime(time)
+                    subtitleText.text = phrases[0] ?? ""
+                    translationText.text = phrases[1] ?? ""
+                    wordList.model = engine.getWordsAtTime(time)
+                }
             }
 
-            Text {
-                id: translationText
+            Rectangle {
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottomMargin: 10
-                color: "white"
-                font.pixelSize: 18
-                text: ""
+                width: subtitleColumn.width + 40
+                height: subtitleColumn.height + 20
+                color: "#8018181b"
+                visible: subtitleText.text !== "" || translationText.text !== ""
+
+                Column {
+                    id: subtitleColumn
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 10
+                    spacing: 4
+
+                    Text {
+                        id: subtitleText
+                        color: "white"
+                        font.pixelSize: 24
+                        horizontalAlignment: Text.AlignHCenter
+                        text: ""
+                    }
+
+                    Text {
+                        id: translationText
+                        color: "white"
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: 18
+                        text: ""
+                    }
+                }
+
             }
 
-            Component.onCompleted: {
-                player.setWidget(this)
-            }
-            onPositionChanged: function(time) {
-                var phrases = engine.getPhraseAtTime(time)
-                subtitleText.text = phrases[0] ?? ""
-                translationText.text = phrases[1] ?? ""
-                wordList.model = engine.getWordsAtTime(time)
-            }
+
         }
-         
+
+                
         Rectangle {
             id: controls
 
