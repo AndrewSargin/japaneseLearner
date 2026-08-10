@@ -29,7 +29,7 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.leftMargin: 10
                 spacing: 8
-                            
+
                 ButtonStyled {
                     id: settingsButton 
                     text: "⚙"
@@ -86,9 +86,13 @@ Window {
                 }
                 onPositionChanged: function(time) {
                     var phrases = engine.getPhraseAtTime(time)
-                    subtitleText.text = phrases[0] ?? ""
-                    translationText.text = phrases[1] ?? ""
-                    wordList.model = engine.getWordsAtTime(time)
+                    var newSubs = phrases [0] ?? ""
+                    
+                    if (newSubs !== subtitleText.text) {
+                        subtitleText.text = phrases[0] ?? ""
+                        translationText.text = phrases[1] ?? ""
+                        wordList.model = engine.getWordsAtTime(time)
+                    }
                 }
             }
 
@@ -129,7 +133,7 @@ Window {
 
         }
 
-                
+
         Rectangle {
             id: controls
 
@@ -221,7 +225,7 @@ Window {
                 spacing: 8
 
                 Row {
-                    
+
                     Text {
                         text: "Word breakdown"
                         color: "#f4f4f5"
@@ -229,48 +233,69 @@ Window {
 
                 }
 
-                Row {
+                Flickable {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    contentWidth: wordRow.width
+                    flickableDirection: Flickable.HorizontalFlick
+                    clip: true
 
-                    spacing: 8 
-                    padding: 10
+                    Row {
+                        id: wordRow
+                        spacing: 8 
 
-                    Repeater {
-                        id: wordList
+                        Repeater {
+                            id: wordList
+                            model: []
 
-                        model: []
+                            delegate: Rectangle {
+                                height: 130
+                                width: 120
+                                color: "#2a2a2a"
+                                radius: 8
+                                clip: true
 
-                        delegate: Rectangle {
-                            width: 120
-                            height: 130
-                            color: "#2a2a2a"
-                            radius: 8
+                                Flickable {
 
-                            Column {
-                                anchors.centerIn: parent
-                                spacing: 4
+                                    anchors.fill: parent
+                                    anchors.margins: 8
+                                    contentHeight: wordColumn.height
+                                    flickableDirection: Flickable.VerticalFlick
 
-                                Text {
-                                    text: modelData.kanji
-                                    color: "#aaaaaa"
-                                    font.pixelSize: 12
-                                }
+                                    Column {
+                                        id: wordColumn
+                                        spacing: 4
+                                        width: parent.width
 
-                                Text {
-                                    text: modelData.reading
-                                    color: "#aaaaaa"
-                                    font.pixelSize: 12
-                                }
+                                        Text {
+                                            text: modelData.kanji
+                                            color: "#aaaaaa"
+                                            font.pixelSize: 12
+                                            wrapMode: Text.Wrap
+                                        }
 
-                                Text {
-                                    text: modelData.meaning
-                                    color: "white"
-                                    font.pixelSize: 12
-                                }
+                                        Text {
+                                            text: modelData.reading
+                                            color: "#aaaaaa"
+                                            font.pixelSize: 12
+                                            wrapMode: Text.Wrap
+                                        }
 
-                                Text {
-                                    text: "N" + modelData.jlpt
-                                    color: "white"
-                                    font.pixelSize: 11
+                                        Text {
+                                            text: modelData.meaning.replace(/\//g, " / ")
+                                            color: "white"
+                                            font.pixelSize: 12
+                                            width: parent.width
+                                            wrapMode: Text.Wrap
+
+                                        }
+
+                                        Text {
+                                            text: "N" + modelData.jlpt
+                                            color: "white"
+                                            font.pixelSize: 11
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -294,7 +319,7 @@ Window {
         onAccepted: engine.loadOriginalSubtitles(selectedFile)
     }
 
-        FileDialog {
+    FileDialog {
         id: translationSubsDialog
         title: "Select Subs"
         nameFilters: ["Subtitle files (*.srt)"]
