@@ -19,56 +19,56 @@ Dictionary::~Dictionary(){
 };
 
 // Searching for word in japanese by its kanji
-Word Dictionary::getEntryByKanji(const std::string& kanji){
+Word Dictionary::getEntryByKanji(const std::string& kanji, const std::string& language){
     std::string sql = "SELECT k.text, ka.text, e.jlpt_level, t.language, t.text\n"
                       "FROM entry e\n"
                       "JOIN kanji k ON k.entry_id = e.id\n"
                       "JOIN kana ka ON ka.entry_id = e.id\n"
                       "JOIN meaning m ON m.entry_id = e.id\n"
                       "JOIN translation t ON t.meaning_id = m.id\n"
-                      "WHERE k.text = ?";
+                      "WHERE k.text = ? AND t.language = ?";
     
     sqlite3_stmt* stmt;
 
     Word word;
 
-    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
-    int rc = sqlite3_bind_text(stmt, 1, kanji.c_str(), -1, SQLITE_STATIC);
-
+    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         std::cout << "Error: " << sqlite3_errmsg(db) << std::endl;
+        return word;
     }
-    else {
-        word = findSqliteEntries(stmt);
-    }
+
+    sqlite3_bind_text(stmt, 1, kanji.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, language.c_str(), -1, SQLITE_STATIC);    
+    word = findSqliteEntries(stmt);
 
     return word;
 };
 
 
 // Searching for a word by its reading (probably useless)
-Word Dictionary::getEntryByReading(const std::string& reading){
+Word Dictionary::getEntryByReading(const std::string& reading, const std::string& language){
     std::string sql = "SELECT k.text, ka.text, e.jlpt_level, t.language, t.text\n"
                       "FROM entry e\n"
                       "JOIN kanji k ON k.entry_id = e.id\n"
                       "JOIN kana ka ON ka.entry_id = e.id\n"
                       "JOIN meaning m ON m.entry_id = e.id\n"
                       "JOIN translation t ON t.meaning_id = e.id\n"
-                      "WHERE ka.text = ?";
+                      "WHERE ka.text = ? AND t.language = ?";
 
     sqlite3_stmt* stmt;
 
     Word word;
 
-    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
-    int rc = sqlite3_bind_text(stmt, 1, reading.c_str(), -1, SQLITE_STATIC);
-
+    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         std::cout << "Error: " << sqlite3_errmsg(db) << std::endl;
+        return word;
     }
-    else {
-        word = findSqliteEntries(stmt);
-    }
+
+    sqlite3_bind_text(stmt, 1, reading.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, language.c_str(), -1, SQLITE_STATIC);
+    word = findSqliteEntries(stmt);
     
     return word;
     

@@ -28,9 +28,9 @@ class Dictionary {
         ~Dictionary();
         
         // Searchs for a word in a db by its kanji
-        Word getEntryByKanji(const std::string& kanji);
+        Word getEntryByKanji(const std::string& kanji, const std::string& language);
         // Searchs for a word in a db by its hiragana reading (probably useless)
-        Word getEntryByReading(const std::string& reading);
+        Word getEntryByReading(const std::string& reading, const std::string& language);
 
     private:
         sqlite3* db;

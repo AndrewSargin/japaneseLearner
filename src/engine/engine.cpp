@@ -119,7 +119,7 @@ void Engine::printCurrentWords(const std::string& phrase){
 
         std::cout << token.POS << " " << token.reading << " " << token.dictForm;
 
-        Word word = dictionary.getEntryByKanji(token.dictForm);
+        Word word = dictionary.getEntryByKanji(token.dictForm, fallbackLanguage);
         if(word.kanji.length() != 0){
 
             // Have to make a way to get needed translation
@@ -143,15 +143,20 @@ std::vector<Word> Engine::getWordsFromPhrase(const std::string& phrase){
 
     for (Token token : tokens) {
 
-        Word word = dictionary.getEntryByKanji(token.dictForm);
+        Word word = dictionary.getEntryByKanji(token.dictForm, fallbackLanguage);
 
         if (word.kanji.empty()) {
-            word =  dictionary.getEntryByReading(token.reading);
+            word =  dictionary.getEntryByReading(token.reading, fallbackLanguage);
         }
 
         words.push_back(word);
     }
 
     return words;
+}
+
+void Engine::setLanguage(const std::string& language){
+    prefferedLanguage = language;
+
 }
 

@@ -21,6 +21,8 @@ class Engine {
         void printCurrentWords(const std::string& phrase);
         // Reinitializes tokenizer with active chosen dictionary
         void changeDictionary(std::string dictName);
+        // Set language for translation
+        void setLanguage(const std::string& language);
 
         std::vector<Word> getWordsFromPhrase(const std::string& phrase);
 
@@ -31,4 +33,7 @@ class Engine {
         // Stores dictionary object
         Dictionary dictionary;
         Tokenizer tokenizer;
+
+        std::string prefferedLanguage = "eng";
+        std::string fallbackLanguage = "eng";
 };
