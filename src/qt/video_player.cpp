@@ -7,6 +7,7 @@ VideoPlayer::VideoPlayer(QObject* parent) : QMediaPlayer(parent){
 
     m_audioOutput = new QAudioOutput(this);
     setAudioOutput(m_audioOutput);
+    m_audioOutput->setVolume(0.25);
 
     connect(this, &QMediaPlayer::positionChanged, this, &VideoPlayer::onQMediaPositionChanged);
     connect(this, &QMediaPlayer::durationChanged, this, &VideoPlayer::onQMediaDurationChanged);
@@ -22,7 +23,7 @@ void VideoPlayer::loadVideo(const QString& path){
 }
 
 void VideoPlayer::setVolume(double volume){
-    m_audioOutput->setVolume(volume);
+    m_audioOutput->setVolume(volume / 100.0);
 }
 
 void VideoPlayer::seek(double position){

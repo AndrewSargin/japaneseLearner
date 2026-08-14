@@ -17,11 +17,8 @@ Window {
     Connections {
         target: player
         function onPositionChanged() {
-            console.log("position", player.getPosition())
             var phrases = engine.getPhraseAtTime(player.getPosition())
-            console.log("phrases: ", phrases)
             var newSubs = phrases[0] ?? ""
-            console.log("newSubs: ", newSubs)
             if (newSubs !== subtitleText.text) {
                 subtitleText.text = newSubs
                 translationText.text = phrases[1] ?? ""
@@ -169,7 +166,6 @@ Window {
                         font.pixelSize: 12
                     }
 
- 
                     Text {
                         id: videoDuration
                         Layout.leftMargin: 8
@@ -222,7 +218,7 @@ Window {
                         from: 0
                         value: 25
                         to: 100
-                        onMoved: player.setVolume(value / 1000)
+                        onMoved: player.setVolume(value)
                     }
                 }
             }
