@@ -1,7 +1,7 @@
 #pragma once
 #include <QObject>
-#include <qtmetamacros.h>
 
+class VideoPlayer;
 class MpvWidget;
 
 class PlayerQt : public QObject {
@@ -12,7 +12,7 @@ class PlayerQt : public QObject {
     Q_PROPERTY(double duration READ getDuration NOTIFY durationChanged)
 
     public: PlayerQt(QObject* parent = nullptr);
-        Q_INVOKABLE void setWidget(MpvWidget* mpv);
+        Q_INVOKABLE void setWidget(VideoPlayer* player);
         Q_INVOKABLE void loadVideo(const QString& videoPath);
         Q_INVOKABLE void togglePlayPause();
         Q_INVOKABLE void setVolume(double volume);
@@ -29,7 +29,8 @@ class PlayerQt : public QObject {
 
     private:
 
-        MpvWidget* mpv = nullptr;
+        VideoPlayer* m_player = nullptr;
+        //MpvWidget* mpv = nullptr;
         double m_position = 0.0;
         double m_duration = 0.0;
 

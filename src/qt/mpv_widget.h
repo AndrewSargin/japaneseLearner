@@ -1,44 +1,50 @@
 #pragma once
+#include <QQuickItem>
+#include <QSGImageNode>
+#include <QSGTexture>
 #include <mpv/client.h>
 #include <mpv/render_gl.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
-#include <QQuickFramebufferObject>
-#include <QQuickItem>
+#include "mpv_render_thread.h"
+#include <QOffscreenSurface>
 
-class MpvWidget : public QQuickFramebufferObject {
-
-    friend class MpvRenderer;
-
+class MpvWidget : public QQuickItem {
+    friend class MpvRenderThread;
     Q_OBJECT
     QML_ELEMENT
-    public:
-        MpvWidget(QQuickItem *parent = nullptr);
-        ~MpvWidget();
+public:
+    MpvWidget(QQuickItem* parent = nullptr);
+    ~MpvWidget();
 
-        Renderer* createRenderer() const override;
+    Q_INVOKABLE double getCurrentTime();
+    void loadVideo(const std::string& path);
+    void togglePlayPause();
+    void setVolume(double volume);
+    void setVideoPosition(double position);
 
-        void loadVideo(const std::string& path);
-        Q_INVOKABLE double getCurrentTime();
-        void setSubtitle(const std::string& text);
-        void togglePlayPause();
-        void setVolume(double volume);
-        void setVideoPosition(double position);
+Q_SIGNALS:
+    void positionChanged(double time);
+    void durationChanged(double time);
+    void needsUpdate();
 
-    Q_SIGNALS:
-        void durationChanged(double value);
-        void positionChanged(double value);
+private Q_SLOTS:
+    void onMpvEvents();
+    void onFrameReady();
 
-    private Q_SLOTS:
-        void onMpvEvents();
-        void maybeUpdate();
+private:
+    static void wakeup(void* ctx);
+    static void on_mpv_redraw(void* ctx);
+    void handleMpvEvent(mpv_event* event);
 
-    private:
-        mpv_handle* mpv;
-        mpv_render_context* mpv_gl = nullptr;
-        static void onUpdate(void *ctx);
-        static void wakeup(void* ctx);
-        std::string subtitleText;
-        void handleMpvEvent(mpv_event *event);
+    mpv_handle* mpv = nullptr;
+    mpv_render_context* mpv_gl = nullptr;
 
+    MpvRenderThread* m_renderThread = nullptr;
+    QOffscreenSurface* m_surface = nullptr;
+    bool m_threadStarted = false;
+    bool m_glInitialized = false;
+
+protected:
+    QSGNode* updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*) override;
 };

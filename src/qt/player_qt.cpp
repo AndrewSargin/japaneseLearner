@@ -1,5 +1,6 @@
 #include "player_qt.h"
 #include "mpv_widget.h"
+#include "video_player.h"
 #include <qobject.h>
 #include <iostream>
 
@@ -12,32 +13,33 @@ void PlayerQt::loadVideo(const QString& videoPath){
 
     std::string path = videoPath.toStdString();
     std::cout << path << std::endl;
+    
     std::cout << "load";
-    if (mpv != nullptr)
-        mpv->loadVideo(path);
-    else throw ("cannot load video: mpv is nullptr");
+    //if (mpv != nullptr)
+    //   mpv->loadVideo(path);
+    //else throw ("cannot load video: mpv is nullptr");
 
 }
 
-void PlayerQt::setWidget(MpvWidget* mpv){
+void PlayerQt::setWidget(VideoPlayer* player){
 
-    this->mpv = mpv;
+    m_player = player;
 
-    connect(mpv, &MpvWidget::positionChanged, this, &PlayerQt::onPositionChanged);
-    connect(mpv, &MpvWidget::durationChanged, this, &PlayerQt::onDurationChanged);
+    /*connect(mpv, &MpvWidget::positionChanged, this, &PlayerQt::onPositionChanged);
+    connect(mpv, &MpvWidget::durationChanged, this, &PlayerQt::onDurationChanged);*/
 }
 
 void PlayerQt::togglePlayPause(){
-   mpv->togglePlayPause();
+   m_player->togglePlayPause();
 }
 
 void PlayerQt::setVolume(double volume){
-    mpv->setVolume(volume);
+    m_player->setVolume(volume);
 
 }
 
 void PlayerQt::seek(double position){
-    mpv->setVideoPosition(position); 
+    m_player->setVideoPosition(position); 
 }
 
 double PlayerQt::getDuration() const{

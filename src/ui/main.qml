@@ -3,6 +3,7 @@ import QtQuick.Window 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
+import QtMultimedia
 import "components"
 import JapaneseLearner 1.0
 
@@ -12,6 +13,23 @@ Window {
     visible: true
 
     color: "#09090b"
+
+    Connections {
+        target: player
+        function onPositionChanged() {
+            console.log("position", player.getPosition())
+            var phrases = engine.getPhraseAtTime(player.getPosition())
+            console.log("phrases: ", phrases)
+            var newSubs = phrases[0] ?? ""
+            console.log("newSubs: ", newSubs)
+            if (newSubs !== subtitleText.text) {
+                subtitleText.text = newSubs
+                translationText.text = phrases[1] ?? ""
+                wordList.model = engine.getWordsAtTime(player.getPosition())
+
+            }
+        }
+    }
 
     ColumnLayout {
 
@@ -76,24 +94,14 @@ Window {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            MpvWidget {
-                id: mpv
+            VideoPlayer {
+                id: player
+                videoOutput: videoOutput
+            }
+
+            VideoOutput {
+                id: videoOutput
                 anchors.fill: parent
-
-
-                Component.onCompleted: {
-                    player.setWidget(this)
-                }
-                onPositionChanged: function(time) {
-                    var phrases = engine.getPhraseAtTime(time)
-                    var newSubs = phrases [0] ?? ""
-                    
-                    if (newSubs !== subtitleText.text) {
-                        subtitleText.text = phrases[0] ?? ""
-                        translationText.text = phrases[1] ?? ""
-                        wordList.model = engine.getWordsAtTime(time)
-                    }
-                }
             }
 
             Rectangle {
@@ -127,12 +135,8 @@ Window {
                         text: ""
                     }
                 }
-
             }
-
-
         }
-
 
         Rectangle {
             id: controls
@@ -165,18 +169,7 @@ Window {
                         font.pixelSize: 12
                     }
 
-                    Slider {
-                        id: videoPosition
-
-                        Layout.fillWidth: true
-                        Layout.leftMargin: 8
-                        from: 0
-                        value: player.position
-                        to: player.duration
-
-                        onMoved: player.seek(value)
-                    }
-
+ 
                     Text {
                         id: videoDuration
                         Layout.leftMargin: 8
@@ -184,6 +177,27 @@ Window {
                         text: "24:24"
                         color: "#a1a1aa"
                         font.pixelSize: 12
+                    }
+                }
+
+                Slider {
+                    id: videoPosition
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 8
+                    from: 0
+                    to: 1
+                    onMoved: player.seek(value)
+
+                    Connections {
+                        target: player
+                        function onPositionChanged() {
+                            if (!videoPosition.pressed)
+                            videoPosition.value = player.getPosition()
+                        }
+                        function onDurationChanged() {
+                            videoPosition.to = player.getDuration()
+
+                        }
                     }
                 }
 
@@ -208,7 +222,7 @@ Window {
                         from: 0
                         value: 25
                         to: 100
-                        onMoved: player.setVolume(value)
+                        onMoved: player.setVolume(value / 1000)
                     }
                 }
             }
@@ -309,7 +323,7 @@ Window {
         id: videoDialog
         title: "Select Video"
         nameFilters: ["Video files (*.mkv *.mp4 *.avi *.mov)"]
-        onAccepted: player.loadVideo(selectedFile)
+        onAccepted: player.loadVideo(selectedFile.toString().replace("file://", ""))
     }
 
     FileDialog {

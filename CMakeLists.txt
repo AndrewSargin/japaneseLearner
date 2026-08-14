@@ -8,7 +8,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(SQLite3 REQUIRED)
-find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGL OpenGLWidgets Quick QuickWidgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGL OpenGLWidgets Quick QuickWidgets Multimedia)
 
 add_executable(japanese-learner
     src/main.cpp
@@ -16,10 +16,8 @@ add_executable(japanese-learner
     src/engine/dictionary.cpp
     src/engine/engine.cpp
     src/engine/tokenizer.cpp
-    src/qt/mpv_widget.cpp
-    src/qt/mpv_renderer.cpp
     src/qt/engine_qt.cpp
-    src/qt/player_qt.cpp
+    src/qt/video_player.cpp
 )
 
 target_include_directories(japanese-learner PRIVATE
@@ -33,6 +31,7 @@ target_link_libraries(japanese-learner PRIVATE
     Qt6::OpenGLWidgets
     Qt6::Quick
     Qt6::QuickWidgets
+    Qt6::Multimedia
     SQLite3::SQLite3
     mecab
     mpv
@@ -40,6 +39,12 @@ target_link_libraries(japanese-learner PRIVATE
 
 qt_add_qml_module(japanese-learner
     URI JapaneseLearner
+    VERSION 1.0
+    
+    SOURCES
+    src/qt/video_player.h
+    src/qt/video_player.cpp
+
     QML_FILES
         src/ui/main.qml
         src/ui/components/ButtonStyled.qml
