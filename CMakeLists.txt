@@ -9,6 +9,10 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(SQLite3 REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGL OpenGLWidgets Quick QuickWidgets Multimedia)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(AVFORMAT REQUIRED libavformat)
+pkg_check_modules(AVCODEC REQUIRED libavcodec)
+pkg_check_modules(AVUTIL REQUIRED libavutil)
 
 add_executable(japanese-learner
     src/main.cpp
@@ -24,6 +28,7 @@ target_include_directories(japanese-learner PRIVATE
     /usr/include
     src/qt
     src/engine
+    ${AVFORMAT_INCLUDE_DIRS}
 )
 target_link_libraries(japanese-learner PRIVATE
     Qt6::Widgets
@@ -33,6 +38,9 @@ target_link_libraries(japanese-learner PRIVATE
     Qt6::QuickWidgets
     Qt6::Multimedia
     SQLite3::SQLite3
+    ${AVFORMAT_LIBRARIES}
+    ${AVCODEC_LIBRARIES}
+    ${AVUTIL_LIBRARIES}
     mecab
     mpv
 )

@@ -325,14 +325,14 @@ Window {
     FileDialog {
         id: subsDialog
         title: "Select Subs"
-        nameFilters: ["Subtitle files (*.srt)"]
+        nameFilters: ["Subtitle files (*.srt *.ass)"]
         onAccepted: engine.loadOriginalSubtitles(selectedFile)
     }
 
     FileDialog {
         id: translationSubsDialog
         title: "Select Subs"
-        nameFilters: ["Subtitle files (*.srt)"]
+        nameFilters: ["Subtitle files (*.srt *.ass)"]
         onAccepted: engine.loadTranslationSubtitles(selectedFile)
     }
 

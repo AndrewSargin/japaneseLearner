@@ -20,6 +20,7 @@ VideoPlayer::~VideoPlayer(){
 
 void VideoPlayer::loadVideo(const QString& path){
     setSource(QUrl::fromLocalFile(path));
+    play();
 }
 
 void VideoPlayer::setVolume(double volume){

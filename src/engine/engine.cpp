@@ -107,7 +107,6 @@ std::vector<std::string> Engine::getPhraseAtTime(double time){
 
     }
 
-    std::cout << "returning" << std::endl;
     return phrases;
 }
 
