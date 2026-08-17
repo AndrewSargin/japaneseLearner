@@ -10,6 +10,9 @@ Window {
     property alias originalSubs: originalSubs
     property alias translationSubs: translationSubs
 
+    ButtonGroup { id: originalGroup }
+    ButtonGroup { id: translationGroup }
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 0
@@ -96,11 +99,17 @@ Window {
                                     height: 55
                                     color: "transparent"
 
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: originalTrackSelected.checked = true
+                                    }
+
                                     RadioButton {
                                         id: originalTrackSelected
                                         anchors.left: parent.left
                                         anchors.verticalCenter: parent.verticalCenter
-
+                                        property int trackIndex: index
+                                        ButtonGroup.group: originalGroup
                                     }
                                     
                                     Column {
@@ -136,8 +145,6 @@ Window {
                         }
                     }
                     
-                    //Item { Layout.fillHeight: true }
-
                     Button {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 32
@@ -198,10 +205,17 @@ Window {
                                     height: 55
                                     color: "transparent"
 
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: translationTrackSelected.checked = true
+                                    }
+
                                     RadioButton {
                                         id: translationTrackSelected
                                         anchors.left: parent.left
                                         anchors.verticalCenter: parent.verticalCenter
+                                        ButtonGroup.group: translationGroup
+                                        property int trackIndex: index
 
                                     }
                                     
@@ -269,6 +283,14 @@ Window {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.rightMargin: 8
+                
+                onClicked: {
+                    var origIndex = originalGroup.checkedButton ? originalGroup.checkedButton.trackIndex : -1
+                    var transIndex = translationGroup.checkedButton ? translationGroup.checkedButton.trackIndex : -1
+                    //player.loadSubtitles(origIndex, transIndex)
+                    subtitleDialog.close()
+                }
+
 
                 background: Rectangle {
                     radius: 4
