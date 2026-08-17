@@ -22,6 +22,7 @@ add_executable(japanese-learner
     src/engine/tokenizer.cpp
     src/qt/engine_qt.cpp
     src/qt/video_player.cpp
+    src/qt/qt_multimedia_subtitle_provider.cpp
 )
 
 target_include_directories(japanese-learner PRIVATE
@@ -29,6 +30,8 @@ target_include_directories(japanese-learner PRIVATE
     src/qt
     src/engine
     ${AVFORMAT_INCLUDE_DIRS}
+    ${AVCODEC_INCLUDE_DIRS}
+    ${AVUTIL_INCLUDE_DIRS}
 )
 target_link_libraries(japanese-learner PRIVATE
     Qt6::Widgets
@@ -38,9 +41,9 @@ target_link_libraries(japanese-learner PRIVATE
     Qt6::QuickWidgets
     Qt6::Multimedia
     SQLite3::SQLite3
-    ${AVFORMAT_LIBRARIES}
-    ${AVCODEC_LIBRARIES}
-    ${AVUTIL_LIBRARIES}
+    avformat
+    avcodec
+    avutil
     mecab
     mpv
 )
@@ -56,5 +59,6 @@ qt_add_qml_module(japanese-learner
     QML_FILES
         src/ui/main.qml
         src/ui/components/ButtonStyled.qml
+        src/ui/components/SubtitleDialog.qml
 
 )

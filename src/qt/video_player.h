@@ -3,6 +3,7 @@
 #include <QMediaPlayer>
 #include <QQuickItem>
 #include "i_video_player.h"
+#include "qt_multimedia_subtitle_provider.h"
 
 class VideoPlayer : public QMediaPlayer, public IVideoPlayer {
     Q_OBJECT
@@ -23,9 +24,11 @@ class VideoPlayer : public QMediaPlayer, public IVideoPlayer {
     Q_SIGNALS:
         void positionChanged();
         void durationChanged();
+        void subtitleTracksFound(QVariantList tracks);
 
     private:
         QAudioOutput* m_audioOutput = nullptr;
+        ISubtitleProvider* m_subtitleProvider = nullptr;
 
     private Q_SLOTS:
         void onQMediaPositionChanged(qint64);

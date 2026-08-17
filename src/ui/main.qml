@@ -8,11 +8,27 @@ import "components"
 import JapaneseLearner 1.0
 
 Window {
+    id: mainWindow
     width: 1280
     height: 720
     visible: true
 
     color: "#09090b"
+
+
+   Connections {
+        target: player
+        function onSubtitleTracksFound(tracks) {
+            console.log("tracks found:", tracks.length)
+            for (var i = 0; i < tracks.length; i++) {
+                console.log(tracks[i].language, tracks[i].title, tracks[i].format)
+            }
+            subtitleDialog.originalSubs.model = tracks
+            subtitleDialog.translationSubs.model = tracks
+            subtitleDialog.show()
+        }
+
+    }
 
     Connections {
         target: player
@@ -336,6 +352,14 @@ Window {
         onAccepted: engine.loadTranslationSubtitles(selectedFile)
     }
 
+    SubtitleDialog {
+        id: subtitleDialog
 
+        transientParent: mainWindow
+        modality: Qt.ApplicationModal
+
+    }
 
 }
+
+

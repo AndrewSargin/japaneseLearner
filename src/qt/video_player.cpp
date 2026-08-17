@@ -5,12 +5,30 @@
 
 VideoPlayer::VideoPlayer(QObject* parent) : QMediaPlayer(parent){
 
+    m_subtitleProvider = new QtMultimediaSubtitleProvider();
     m_audioOutput = new QAudioOutput(this);
     setAudioOutput(m_audioOutput);
     m_audioOutput->setVolume(0.25);
 
     connect(this, &QMediaPlayer::positionChanged, this, &VideoPlayer::onQMediaPositionChanged);
     connect(this, &QMediaPlayer::durationChanged, this, &VideoPlayer::onQMediaDurationChanged);
+    connect(this, &QMediaPlayer::mediaStatusChanged, this, [this](QMediaPlayer::MediaStatus status) {
+        if (status == QMediaPlayer::LoadedMedia) {
+            auto tracks = m_subtitleProvider->getSubtitleTracks(source().toLocalFile());
+
+            QVariantList result;
+            for (auto& t : tracks) {
+                QVariantMap map;
+                map["index"] = t.index;
+                map["language"] = t.language;
+                map["title"] = t.title;
+                map["format"] = t.format;
+                result.append(map);
+            }
+
+            Q_EMIT subtitleTracksFound(result);
+        }
+    });
 
 }
 

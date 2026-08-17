@@ -1,6 +1,5 @@
 #include "qt_multimedia_subtitle_provider.h"
 #include <QList>
-#include <libavcodec/packet.h>
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavcodec/codec_desc.h>
