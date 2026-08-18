@@ -21,6 +21,9 @@ Window {
             Layout.fillWidth: true
             Layout.preferredHeight: 48
             color: "transparent"
+            border.color: "#27272a"
+            border.width: 1
+
 
             Text {
                 anchors.left: parent.left
@@ -59,12 +62,10 @@ Window {
             Layout.fillWidth: true
             Layout.fillHeight: true
             color: "transparent"
-            border.color: "#27272a"
-            border.width: 1
 
             RowLayout {
+                anchors.margins: 8                
                 anchors.fill: parent
-                anchors.margins: 8
 
                 ColumnLayout {
                     Layout.preferredWidth: 1
@@ -165,30 +166,13 @@ Window {
                             }
                         }
                     }
-                    
-                    Button {
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 32
-                        Layout.alignment: Qt.AlignBottom
-                        
-                        background: Rectangle {
-                            radius: 4
-                            color: "#27272a"
-                        }
-                        
-                        contentItem: Text {
-                            text: "Load External Files..."
-                            color: "#38bdf8"
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                        }
-                    }
                 }
 
                 Rectangle {
                     implicitWidth: 1
                     Layout.fillHeight: true
                     Layout.margins: 8
+
                     color: "#27272a"
 
                 }
@@ -293,25 +277,28 @@ Window {
                             }
                         }
                     }
-
-
-                    Button {
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 32
-                        Layout.alignment: Qt.AlignBottom
-                        background: Rectangle {
-                            radius: 4
-                            color: "#27272a"
-                        }
-
-                        contentItem: Text {
-                            text: "Load External File..."
-                            color: "#38bdf8"
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                        }
-                    }
                 }
+            }
+        }
+
+        Button {
+            id: loadExternalSubsButton
+            
+            Layout.fillWidth: true
+            Layout.bottomMargin: 8
+            Layout.rightMargin: 8
+            Layout.leftMargin: 8
+
+            background: Rectangle {
+                radius: 4
+                color: "#27272a"
+            }
+
+            contentItem: Text {
+                text: "Load External File..."
+                color: "#38bdf8"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
             }
         }
 
@@ -319,6 +306,8 @@ Window {
             Layout.fillWidth: true
             Layout.preferredHeight: 48          
             color: "#18181b"
+            border.color: "#27272a"
+            border.width: 1
 
             Button {
                 id: applyButton
