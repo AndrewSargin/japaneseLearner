@@ -16,7 +16,7 @@ Window {
     color: "#09090b"
 
 
-   Connections {
+    Connections {
         target: player
         function onSubtitleTracksFound(tracks) {
             console.log("tracks found:", tracks.length)

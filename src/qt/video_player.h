@@ -29,6 +29,7 @@ class VideoPlayer : public QMediaPlayer, public IVideoPlayer {
     private:
         QAudioOutput* m_audioOutput = nullptr;
         ISubtitleProvider* m_subtitleProvider = nullptr;
+        bool m_tracksLoaded = false;
 
     private Q_SLOTS:
         void onQMediaPositionChanged(qint64);

@@ -13,7 +13,8 @@ VideoPlayer::VideoPlayer(QObject* parent) : QMediaPlayer(parent){
     connect(this, &QMediaPlayer::positionChanged, this, &VideoPlayer::onQMediaPositionChanged);
     connect(this, &QMediaPlayer::durationChanged, this, &VideoPlayer::onQMediaDurationChanged);
     connect(this, &QMediaPlayer::mediaStatusChanged, this, [this](QMediaPlayer::MediaStatus status) {
-        if (status == QMediaPlayer::LoadedMedia) {
+        if (status == QMediaPlayer::LoadedMedia && !m_tracksLoaded) {
+            m_tracksLoaded = true; 
             auto tracks = m_subtitleProvider->getSubtitleTracks(source().toLocalFile());
 
             QVariantList result;
@@ -27,6 +28,8 @@ VideoPlayer::VideoPlayer(QObject* parent) : QMediaPlayer(parent){
             }
 
             Q_EMIT subtitleTracksFound(result);
+
+            play();
         }
     });
 
@@ -37,8 +40,13 @@ VideoPlayer::~VideoPlayer(){
 }
 
 void VideoPlayer::loadVideo(const QString& path){
+    stop();
+
+    m_tracksLoaded = false;
+
+    setSource(QUrl());
+
     setSource(QUrl::fromLocalFile(path));
-    play();
 }
 
 void VideoPlayer::setVolume(double volume){
