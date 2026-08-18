@@ -110,6 +110,27 @@ Window {
                                         anchors.verticalCenter: parent.verticalCenter
                                         property int trackIndex: index
                                         ButtonGroup.group: originalGroup
+
+                                        indicator: Rectangle {
+                                            implicitWidth: 18
+                                            implicitHeight: 18
+                                            x: originalTrackSelected.leftPadding
+                                            y: parent.height / 2 - height / 2
+                                            radius: 9
+                                            border.color: originalTrackSelected.checked ? "#38bdf8" : "#71717a"
+                                            border.width: 2
+                                            color: "#121214"
+
+                                            Rectangle {
+                                                width: 10
+                                                height: 10
+                                                x: parent.width / 2 - width / 2
+                                                y: parent.height / 2 - height / 2
+                                                radius: 5
+                                                color: originalTrackSelected.checked ? "#38bdf8" : "#71717a"
+                                                visible: originalTrackSelected.checked
+                                            }
+                                        }
                                     }
                                     
                                     Column {
@@ -216,6 +237,27 @@ Window {
                                         anchors.verticalCenter: parent.verticalCenter
                                         ButtonGroup.group: translationGroup
                                         property int trackIndex: index
+
+                                        indicator: Rectangle {
+                                            implicitWidth: 18
+                                            implicitHeight: 18
+                                            x: translationTrackSelected.leftPadding
+                                            y: parent.height / 2 - height / 2
+                                            radius: 9
+                                            border.color: translationTrackSelected.checked ? "#38bdf8" : "#71717a"
+                                            border.width: 2
+                                            color: "#121214"
+
+                                            Rectangle {
+                                                width: 10
+                                                height: 10
+                                                x: parent.width / 2 - width / 2
+                                                y: parent.height / 2 - height / 2
+                                                radius: 5
+                                                color: translationTrackSelected.checked ? "#38bdf8" : "#71717a"
+                                                visible: translationTrackSelected.checked
+                                            }
+                                        }
 
                                     }
                                     
