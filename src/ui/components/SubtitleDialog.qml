@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Dialogs
 
 Window {
 
@@ -9,6 +10,7 @@ Window {
 
     property alias originalSubs: originalSubs
     property alias translationSubs: translationSubs
+    property var subtitleTracks: []
 
     ButtonGroup { id: originalGroup }
     ButtonGroup { id: translationGroup }
@@ -93,7 +95,7 @@ Window {
 
                             Repeater {
                                 id: originalSubs
-                                model: []
+                                model: engine.subtitleTracks
 
                                 delegate: Rectangle {
                                     width: parent.width
@@ -109,7 +111,7 @@ Window {
                                         id: originalTrackSelected
                                         anchors.left: parent.left
                                         anchors.verticalCenter: parent.verticalCenter
-                                        property int trackIndex: index
+                                        property int trackIndex: modelData.trackIndex
                                         ButtonGroup.group: originalGroup
 
                                         indicator: Rectangle {
@@ -203,7 +205,7 @@ Window {
 
                             Repeater {
                                 id: translationSubs
-                                model: []
+                                model: engine.subtitleTracks
 
                                 delegate: Rectangle {
                                     width: parent.width
@@ -220,7 +222,7 @@ Window {
                                         anchors.left: parent.left
                                         anchors.verticalCenter: parent.verticalCenter
                                         ButtonGroup.group: translationGroup
-                                        property int trackIndex: index
+                                        property int trackIndex: modelData.trackIndex
 
                                         indicator: Rectangle {
                                             implicitWidth: 18
@@ -289,6 +291,8 @@ Window {
             Layout.rightMargin: 8
             Layout.leftMargin: 8
 
+            onClicked: externalSubsDialog.open()
+
             background: Rectangle {
                 radius: 4
                 color: "#27272a"
@@ -343,6 +347,8 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.rightMargin: 8
 
+                onClicked: subtitleDialog.close()
+
                 background: Rectangle {
                     radius: 4
                     color: "#27272a"
@@ -359,5 +365,12 @@ Window {
                 }
             }
         }
+    }
+
+    FileDialog {
+        id: externalSubsDialog
+        title: "Select subs"
+        nameFilters: ["Subtitle Files (*.srt *.ass)"]
+        onAccepted: engine.addExternalSubtitleToList(selectedFile)  //subtitleDialog.subtitleTracks.push(selectedFile)
     }
 }

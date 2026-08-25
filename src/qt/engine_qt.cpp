@@ -1,6 +1,5 @@
 #include "engine_qt.h"
 #include <QUrl>
-#include <qcontainerfwd.h>
 #include <QVariantMap>
 
 EngineQt::EngineQt(const std::string& db_path,
@@ -48,5 +47,32 @@ QVariantList EngineQt::getWordsAtTime(double time) {
         }
     }
 
+    return result;
+}
+
+void EngineQt::prepareVideo(const QString& path){
+    QUrl url(path);
+    std::string localPath = url.isLocalFile() ? url.toLocalFile().toStdString() : path.toStdString();
+    engine.prepareVideo(localPath);
+    emit subtitleTracksChanged();
+}
+
+void EngineQt::addExternalSubtitleToList(const QString& path){
+    QUrl url(path);
+    engine.addExternalSubtitleToList(url.toLocalFile().toStdString());
+    emit subtitleTracksChanged();
+}
+
+QVariantList EngineQt::getSubtitleTracks() const {
+    QVariantList result;
+    for (const auto& track : engine.getSubtitleManager().getTracks()) {
+        QVariantMap map;
+        map["trackIndex"] = track.index;
+        map["title"] = QString::fromStdString(track.title);
+        map["language"] = QString::fromStdString(track.language);
+        map["format"] = QString::fromStdString(track.format);
+        map["isEmbeded"] = track.isEmbeded;
+        result.append(map);
+    }
     return result;
 }

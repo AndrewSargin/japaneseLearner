@@ -1,13 +1,11 @@
 #include <iostream>
 #include "engine.h"
-#include "subtitle_parser.h"
-#include "tokenizer.h"
 
 // Constructs a class and initializes a dictionary and tokenizer
 Engine::Engine(const std::string& db_path, const std::string& dict_path, const std::string& dictionary) :
     dictionary(db_path),
     tokenizer(dict_path, dictionary) {
-
+    subsManager = SubtitleManager();
 }
 
 Engine::~Engine(){
@@ -157,5 +155,17 @@ std::vector<Word> Engine::getWordsFromPhrase(const std::string& phrase){
 void Engine::setLanguage(const std::string& language){
     prefferedLanguage = language;
 
+}
+
+void Engine::prepareVideo(const std::string& videoPath){
+    subsManager.clear();
+
+    currentVideo = videoPath;
+    subsManager.getSubtitleTracksFromVideo(videoPath);
+}
+
+void Engine::addExternalSubtitleToList(const std::string& path) {
+    std::string format = SubtitleParser::detectFormat(path);
+    subsManager.addExternalTrack(path, format);
 }
 

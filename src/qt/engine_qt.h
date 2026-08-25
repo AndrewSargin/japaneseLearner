@@ -6,18 +6,26 @@
 
 class EngineQt : public QObject {
     Q_OBJECT
+        Q_PROPERTY(QVariantList subtitleTracks READ getSubtitleTracks NOTIFY subtitleTracksChanged)
 
     public:
         explicit EngineQt(const std::string& db_path,
                           const std::string& dict_path,
                           const std::string& dictionary,
                           QObject* parent = nullptr);
+
         Q_INVOKABLE QVariantList getWordsAtTime(double time);
+        Q_INVOKABLE QVariantList getSubtitleTracks() const;
+        Q_INVOKABLE void prepareVideo(const QString& path);
 
     public slots:
         void loadOriginalSubtitles(const QString& path);
         void loadTranslationSubtitles(const QString& path);
         QStringList getPhraseAtTime(double time);
+        void addExternalSubtitleToList(const QString& path);
+
+    Q_SIGNALS:
+        void subtitleTracksChanged();
 
     private:
         Engine engine;

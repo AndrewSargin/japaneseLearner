@@ -15,21 +15,6 @@ Window {
 
     color: "#09090b"
 
-
-    Connections {
-        target: player
-        function onSubtitleTracksFound(tracks) {
-            console.log("tracks found:", tracks.length)
-            for (var i = 0; i < tracks.length; i++) {
-                console.log(tracks[i].language, tracks[i].title, tracks[i].format)
-            }
-            subtitleDialog.originalSubs.model = tracks
-            subtitleDialog.translationSubs.model = tracks
-            subtitleDialog.show()
-        }
-
-    }
-
     Connections {
         target: player
         function onPositionChanged() {
@@ -335,7 +320,14 @@ Window {
         id: videoDialog
         title: "Select Video"
         nameFilters: ["Video files (*.mkv *.mp4 *.avi *.mov)"]
-        onAccepted: player.loadVideo(selectedFile.toString().replace("file://", ""))
+        onAccepted: {
+            var path = selectedFile.toString().replace("file://", "")
+            player.loadVideo(path)
+            engine.prepareVideo(selectedFile)
+            //SubtitleDialog.originalSubs.model = engine.getSubtitleTracks()
+            //SubtitleDialog.translationSubs.model = engine.getSubtitleTracks()
+            subtitleDialog.show()            
+        }
     }
 
     FileDialog {

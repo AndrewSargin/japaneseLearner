@@ -5,6 +5,7 @@
 #include "dictionary.h"
 #include "subtitle_parser.h"
 #include "tokenizer.h"
+#include "subtitle_manager.h"
 
 class Engine {
     
@@ -24,7 +25,13 @@ class Engine {
         // Set language for translation
         void setLanguage(const std::string& language);
 
+        void prepareVideo(const std::string& videoPath);
+
+        void addExternalSubtitleToList(const std::string& path);
+
         std::vector<Word> getWordsFromPhrase(const std::string& phrase);
+
+        const SubtitleManager& getSubtitleManager() const { return subsManager; };
 
     private:
         // Stores subtitles
@@ -33,6 +40,10 @@ class Engine {
         // Stores dictionary object
         Dictionary dictionary;
         Tokenizer tokenizer;
+        SubtitleManager subsManager;
+        
+
+        std::string currentVideo;
 
         std::string prefferedLanguage = "eng";
         std::string fallbackLanguage = "eng";

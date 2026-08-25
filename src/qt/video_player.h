@@ -17,7 +17,7 @@ class VideoPlayer : public QMediaPlayer, public IVideoPlayer {
         Q_INVOKABLE void setVolume(double volume) override;
         Q_INVOKABLE void seek(double position) override;
         Q_INVOKABLE void togglePlayPause() override;
-
+        Q_INVOKABLE void loadSubtitles(int originalIndex, int translationIndex) override;
         Q_INVOKABLE double getPosition() const override;
         Q_INVOKABLE double getDuration() const override;
 

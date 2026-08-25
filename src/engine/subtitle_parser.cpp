@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <iostream>
 
 bool SubtitleParser::isNumber (const std::string& line){
     for (int i = 0; i < line.size(); i++){

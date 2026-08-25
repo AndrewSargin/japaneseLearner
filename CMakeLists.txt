@@ -20,6 +20,7 @@ add_executable(japanese-learner
     src/engine/dictionary.cpp
     src/engine/engine.cpp
     src/engine/tokenizer.cpp
+    src/engine/subtitle_manager.cpp
     src/qt/engine_qt.cpp
     src/qt/video_player.cpp
     src/qt/qt_multimedia_subtitle_provider.cpp

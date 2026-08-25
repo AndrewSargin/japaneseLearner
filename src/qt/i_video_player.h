@@ -11,7 +11,7 @@ class IVideoPlayer{
         virtual void togglePlayPause() = 0;
         virtual void setVolume(double volume) = 0;
         virtual void seek(double position) = 0;
-
+        virtual void loadSubtitles(int originalIndex, int translationIndex) = 0;
         virtual double getPosition() const = 0;
         virtual double getDuration() const = 0;
 };
