@@ -169,3 +169,24 @@ void Engine::addExternalSubtitleToList(const std::string& path) {
     subsManager.addExternalTrack(path, format);
 }
 
+void Engine::loadBothSubtitles(int idx1, int idx2){
+
+    originalSubtitles.clear();
+    translationSubtitles.clear();
+    
+    std::string originalPath;
+    std::string translationPath;
+
+    std::vector<SubtitleManager::SubtitleEntry> subtitleList = subsManager.getTracks();
+
+    for (int i = 0; i < subtitleList.size(); i++) {
+        if (idx1 == subtitleList[i].index)
+            originalPath = subtitleList[i].filePath;
+        if (idx2 == subtitleList[i].index)
+            translationPath = subtitleList[i].filePath;
+    }
+
+    loadOriginalSubtitles(originalPath);
+    loadTranslationSubtitles(translationPath);
+
+}

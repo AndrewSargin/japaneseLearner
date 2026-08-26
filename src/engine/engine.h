@@ -16,6 +16,8 @@ class Engine {
         // Loads subtitles by their filepath
         void loadOriginalSubtitles(const std::string& filepath);
         void loadTranslationSubtitles(const std::string& filepath);
+        // Loads subtitles by their indices
+        void loadBothSubtitles(int idx1, int idx2);
         // Searches for a text in subtitles by a given time
         std::vector<std::string> getPhraseAtTime(double time);
         // Outputs processed word from text

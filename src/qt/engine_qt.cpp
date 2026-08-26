@@ -76,3 +76,7 @@ QVariantList EngineQt::getSubtitleTracks() const {
     }
     return result;
 }
+
+void EngineQt::loadSubtitles(int idx1, int idx2){
+    engine.loadBothSubtitles(idx1, idx2);
+}

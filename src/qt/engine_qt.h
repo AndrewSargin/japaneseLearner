@@ -17,6 +17,7 @@ class EngineQt : public QObject {
         Q_INVOKABLE QVariantList getWordsAtTime(double time);
         Q_INVOKABLE QVariantList getSubtitleTracks() const;
         Q_INVOKABLE void prepareVideo(const QString& path);
+        Q_INVOKABLE void loadSubtitles(int idx1, int idx2);
 
     public slots:
         void loadOriginalSubtitles(const QString& path);

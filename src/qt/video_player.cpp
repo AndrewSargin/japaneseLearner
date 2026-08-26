@@ -78,6 +78,3 @@ void VideoPlayer::onQMediaDurationChanged(qint64){
     Q_EMIT durationChanged();
 }
 
-void VideoPlayer::loadSubtitles(int origIdx, int transIdx){
-
-}

@@ -324,8 +324,6 @@ Window {
             var path = selectedFile.toString().replace("file://", "")
             player.loadVideo(path)
             engine.prepareVideo(selectedFile)
-            //SubtitleDialog.originalSubs.model = engine.getSubtitleTracks()
-            //SubtitleDialog.translationSubs.model = engine.getSubtitleTracks()
             subtitleDialog.show()            
         }
     }

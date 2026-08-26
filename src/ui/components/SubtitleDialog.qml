@@ -322,7 +322,7 @@ Window {
                 onClicked: {
                     var origIndex = originalGroup.checkedButton ? originalGroup.checkedButton.trackIndex : -1
                     var transIndex = translationGroup.checkedButton ? translationGroup.checkedButton.trackIndex : -1
-                    //player.loadSubtitles(origIndex, transIndex)
+                    engine.loadSubtitles(origIndex, transIndex)
                     subtitleDialog.close()
                 }
 
