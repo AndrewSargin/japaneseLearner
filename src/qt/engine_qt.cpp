@@ -1,6 +1,7 @@
 #include "engine_qt.h"
 #include <QUrl>
 #include <QVariantMap>
+#include <iostream>
 
 EngineQt::EngineQt(const std::string& db_path,
                    const std::string& dict_path,
@@ -8,16 +9,6 @@ EngineQt::EngineQt(const std::string& db_path,
                    QObject* parent) :
                    engine(db_path, dict_path, dictionary),
                    QObject(parent){
-}
-
-void EngineQt::loadOriginalSubtitles(const QString& path){
-    QUrl url(path);
-    engine.loadOriginalSubtitles(url.toLocalFile().toStdString());
-}
-
-void EngineQt::loadTranslationSubtitles(const QString& path){
-    QUrl url(path);
-    engine.loadTranslationSubtitles(url.toLocalFile().toStdString());
 }
 
 QStringList EngineQt::getPhraseAtTime(double time){
@@ -78,5 +69,6 @@ QVariantList EngineQt::getSubtitleTracks() const {
 }
 
 void EngineQt::loadSubtitles(int idx1, int idx2){
+    std::cout << idx1 << " " << idx2 << std::endl;
     engine.loadBothSubtitles(idx1, idx2);
 }

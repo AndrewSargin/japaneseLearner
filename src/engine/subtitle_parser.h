@@ -20,6 +20,8 @@ class SubtitleParser {
         static std::vector<Subtitle> parseFromString(const std::string& content, const std::string& format);
         // Detects if subtitles are in .srt or .ass format
         static std::string detectFormat(const std::string& filepath);
+        static std::string getSubtitleContent(const std::string& videoPath, const int idx);
+        static std::vector<Subtitle> getEmbededSubtitles(const std::string& path, int idx, const std::string& format);
       
     private:
         // Takes a string containing start and end time and returns a vector of numeric times
@@ -34,4 +36,6 @@ class SubtitleParser {
         static std::vector<Subtitle> parseSRT(const std::string& content);
         // Parses .ass subtitles
         static std::vector<Subtitle> parseASS(const std::string& content);
+
+
 };

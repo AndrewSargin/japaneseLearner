@@ -13,9 +13,9 @@ class Engine {
         // Constructs a class and initializes a dictionary
         Engine(const std::string& db_path, const std::string& dict_path, const std::string& dictionary);
         ~Engine();
-        // Loads subtitles by their filepath
-        void loadOriginalSubtitles(const std::string& filepath);
-        void loadTranslationSubtitles(const std::string& filepath);
+        // Loads subtitles
+        void loadOriginalSubtitles(const SubtitleManager::SubtitleEntry& track);
+        void loadTranslationSubtitles(const SubtitleManager::SubtitleEntry& track);
         // Loads subtitles by their indices
         void loadBothSubtitles(int idx1, int idx2);
         // Searches for a text in subtitles by a given time

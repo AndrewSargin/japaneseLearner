@@ -1,7 +1,14 @@
 #include "subtitle_parser.h"
 #include <fstream>
+#include <libavutil/avutil.h>
 #include <sstream>
 #include <string>
+
+extern "C" {
+#include <libavformat/avformat.h>
+#include <libavcodec/codec_desc.h>
+#include <libavutil/dict.h>
+}
 
 bool SubtitleParser::isNumber (const std::string& line){
     for (int i = 0; i < line.size(); i++){
@@ -220,3 +227,116 @@ std::string SubtitleParser::detectFormat(const std::string& filepath){
 
 }
 
+std::string SubtitleParser::getSubtitleContent(const std::string& videoPath, const int idx){
+    AVFormatContext *ctx = nullptr;
+    if (avformat_open_input(&ctx, videoPath.c_str(), nullptr, nullptr) < 0)
+        return "";
+    
+    avformat_find_stream_info(ctx, nullptr);
+
+    int subIndex = 0;
+    int streamIndex = -1;
+    for (unsigned int i = 0; i < ctx->nb_streams; i++){
+        if (ctx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
+            if (subIndex == idx) {
+                streamIndex = i;
+                break;
+            }
+            subIndex++;
+        }
+    }
+
+    if (streamIndex < 0) {
+        avformat_close_input(&ctx);
+        return "";
+    }
+
+    std::string result;
+    AVPacket* pkt = av_packet_alloc();
+
+    while (av_read_frame(ctx, pkt) >= 0){
+        if (pkt->stream_index == streamIndex) {
+            result += std::string((const char*)pkt->data, pkt->size);
+        }
+        av_packet_unref(pkt);
+    }
+    av_packet_free(&pkt);
+    avformat_close_input(&ctx);
+    return result;
+
+}
+
+std::vector<Subtitle> SubtitleParser::getEmbededSubtitles(const std::string& videoPath, int idx, const std::string& format){
+
+    std::vector<Subtitle> result;
+
+    AVFormatContext* ctx = nullptr;
+    if (avformat_open_input(&ctx, videoPath.c_str(), nullptr, nullptr) < 0)
+        return result;
+    if (avformat_find_stream_info(ctx, nullptr) < 0) {
+        avformat_close_input(&ctx);
+        return result;
+    }
+
+    int subIndex = 0, streamIndex = -1;
+    AVRational timeBase{1, 1};
+
+    for (unsigned int i = 0; i < ctx->nb_streams; i++) {
+        if (ctx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
+            if (subIndex == idx) {
+                streamIndex = i;
+                timeBase = ctx->streams[i]->time_base;
+                break;
+            }
+            subIndex++;
+        }
+    }
+
+    if (streamIndex < 0) {
+        avformat_close_input(&ctx);
+        return result;
+    }
+
+    AVPacket* pkt = av_packet_alloc();
+
+    while (av_read_frame(ctx, pkt) >= 0) {
+
+        if (pkt->stream_index == streamIndex && pkt->size > 0) {
+
+            std::string raw((const char*)pkt->data, pkt->size);
+
+            if (format == "mov_text") {
+                if (raw.size() > 2) raw = raw.substr(2);
+            }
+            else if (format == "ass" || format == "ssa") {
+                int commas = 0, pos = 0;
+                for (; pos < (int)raw.size() && commas < 8; pos++)
+                    if (raw[pos] == ',') commas++;
+                raw = pos <= (int)raw.size() ? raw.substr(pos) : "";
+
+                std::string cleaned;
+                bool inTag = false;
+                for (char c : raw) {
+                    if (c == '{') inTag = true;
+                    else if (c == '}') inTag = false;
+                    else if (!inTag) cleaned += c;
+                }
+                raw = cleaned;
+            }
+
+            if (!raw.empty()) {
+                Subtitle sub;
+                sub.start_time = pkt->pts * av_q2d(timeBase);
+                double duration = pkt->duration > 0 ? pkt->duration * av_q2d(timeBase) : 2.0;
+                sub.end_time = sub.start_time + duration;
+                sub.text = raw;
+                result.push_back(sub);
+            }
+        }
+        av_packet_unref(pkt);
+    }
+
+    av_packet_free(&pkt);
+    avformat_close_input(&ctx);
+    return result;
+}

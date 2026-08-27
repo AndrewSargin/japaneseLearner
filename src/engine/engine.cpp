@@ -12,18 +12,21 @@ Engine::~Engine(){
 
 }
 
-void Engine::loadOriginalSubtitles(const std::string& filepath){
+void Engine::loadOriginalSubtitles(const SubtitleManager::SubtitleEntry& track){
    
     originalSubtitles.clear();
-    originalSubtitles = SubtitleParser::parse(filepath);
+    if (!track.isEmbeded)
+        originalSubtitles = SubtitleParser::parse(track.filePath);
+    else originalSubtitles = SubtitleParser::getEmbededSubtitles(track.filePath, track.index, track.format);
 
 }
 
-void Engine::loadTranslationSubtitles(const std::string& filepath){
+void Engine::loadTranslationSubtitles(const SubtitleManager::SubtitleEntry& track){
 
     translationSubtitles.clear();
-    translationSubtitles = SubtitleParser::parse(filepath);
-}
+    if (!track.isEmbeded)
+        translationSubtitles = SubtitleParser::parse(track.filePath);
+    else translationSubtitles = SubtitleParser::getEmbededSubtitles(track.filePath, track.index, track.format);}
 
 // For now the search is done by looking through the vector of subtitles
 // It's a binaty search now, but for a played video it's better to store an index
@@ -171,22 +174,14 @@ void Engine::addExternalSubtitleToList(const std::string& path) {
 
 void Engine::loadBothSubtitles(int idx1, int idx2){
 
-    originalSubtitles.clear();
-    translationSubtitles.clear();
-    
-    std::string originalPath;
-    std::string translationPath;
-
     std::vector<SubtitleManager::SubtitleEntry> subtitleList = subsManager.getTracks();
 
     for (int i = 0; i < subtitleList.size(); i++) {
-        if (idx1 == subtitleList[i].index)
-            originalPath = subtitleList[i].filePath;
-        if (idx2 == subtitleList[i].index)
-            translationPath = subtitleList[i].filePath;
+        if (idx1 == subtitleList[i].index) {
+            loadOriginalSubtitles(subtitleList[i]);
+        }
+        if (idx2 == subtitleList[i].index) {
+            loadTranslationSubtitles(subtitleList[i]);
+        }
     }
-
-    loadOriginalSubtitles(originalPath);
-    loadTranslationSubtitles(translationPath);
-
 }

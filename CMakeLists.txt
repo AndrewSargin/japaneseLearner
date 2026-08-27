@@ -26,6 +26,12 @@ add_executable(japanese-learner
     src/qt/qt_multimedia_subtitle_provider.cpp
 )
 
+target_compile_definitions(japanese-learner PRIVATE
+    __STDC_CONSTANT_MACROS
+    __STDC_LIMIT_MACROS
+    __STDC_FORMAT_MACROS
+)
+
 target_include_directories(japanese-learner PRIVATE
     /usr/include
     src/qt

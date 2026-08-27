@@ -20,8 +20,6 @@ class EngineQt : public QObject {
         Q_INVOKABLE void loadSubtitles(int idx1, int idx2);
 
     public slots:
-        void loadOriginalSubtitles(const QString& path);
-        void loadTranslationSubtitles(const QString& path);
         QStringList getPhraseAtTime(double time);
         void addExternalSubtitleToList(const QString& path);
 
