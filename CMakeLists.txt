@@ -55,6 +55,10 @@ target_link_libraries(japanese-learner PRIVATE
     mpv
 )
 
+set_source_files_properties(src/ui/ThemeManager.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+)
+
 qt_add_qml_module(japanese-learner
     URI JapaneseLearner
     VERSION 1.0
@@ -65,7 +69,13 @@ qt_add_qml_module(japanese-learner
 
     QML_FILES
         src/ui/main.qml
+        src/ui/ThemeManager.qml
         src/ui/components/ButtonStyled.qml
         src/ui/components/SubtitleDialog.qml
+        src/ui/themes/DarkTheme.qml
+        src/ui/themes/LightTheme.qml
 
 )
+
+
+

@@ -4,7 +4,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtMultimedia
-import "components"
 import JapaneseLearner 1.0
 
 Window {
@@ -13,7 +12,7 @@ Window {
     height: 720
     visible: true
 
-    color: "#09090b"
+    color: ThemeManager.current.bgApp
 
     Connections {
         target: player
@@ -38,7 +37,7 @@ Window {
             id: topBar
             Layout.fillWidth: true
             Layout.preferredHeight: 40
-            color: "#121214"
+            color: ThemeManager.current.bgPanel
 
             Row {
                 anchors.left: parent.left
@@ -82,7 +81,7 @@ Window {
                 anchors.rightMargin: 10
 
                 Text {
-                    color: "white"
+                    color: ThemeManager.current.textPrimary
                     text: "JapaneseLearner"
                 }
             }
@@ -107,7 +106,7 @@ Window {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: subtitleColumn.width + 40
                 height: subtitleColumn.height + 20
-                color: "#8018181b"
+                color: ThemeManager.current.bgSurface
                 visible: subtitleText.text !== "" || translationText.text !== ""
 
                 Column {
@@ -119,7 +118,7 @@ Window {
 
                     Text {
                         id: subtitleText
-                        color: "white"
+                        color: ThemeManager.current.textPrimary
                         font.pixelSize: 24
                         horizontalAlignment: Text.AlignHCenter
                         text: ""
@@ -127,7 +126,7 @@ Window {
 
                     Text {
                         id: translationText
-                        color: "white"
+                        color: ThemeManager.current.textPrimary
                         horizontalAlignment: Text.AlignHCenter
                         font.pixelSize: 18
                         text: ""
@@ -146,8 +145,8 @@ Window {
             Layout.rightMargin: 16
             Layout.bottomMargin: 16
             radius: 4
-            color: "#18181b"
-            border.color: "#27272a"
+            color: ThemeManager.current.bgSurface
+            border.color: ThemeManager.current.border
             border.width: 1
 
             ColumnLayout {
@@ -163,7 +162,7 @@ Window {
                         id: currentVideoPosition
                         Layout.leftMargin: 8
                         text: "00:00"
-                        color: "#a1a1aa"
+                        color: ThemeManager.current.textSecondary
                         font.pixelSize: 12
                     }
 
@@ -172,7 +171,7 @@ Window {
                         Layout.leftMargin: 8
                         Layout.rightMargin: 8
                         text: "24:24"
-                        color: "#a1a1aa"
+                        color: ThemeManager.current.textSecondary
                         font.pixelSize: 12
                     }
                 }
@@ -209,7 +208,7 @@ Window {
 
                         background: Rectangle {
                             radius: parent.implicitWidth / 2
-                            color: "#a1a1aa"
+                            color: ThemeManager.current.textSecondary
                         }
                         onClicked: player.togglePlayPause()
                     }
@@ -229,7 +228,7 @@ Window {
             id: wordBreakdown
             Layout.fillWidth: true
             Layout.preferredHeight: 150
-            color: "#18181b"
+            color: ThemeManager.current.bgSurface
 
             ColumnLayout {
                 anchors.fill: parent
@@ -239,7 +238,7 @@ Window {
 
                     Text {
                         text: "Word breakdown"
-                        color: "#f4f4f5"
+                        color: ThemeManager.current.textPrimary
                     }
 
                 }
@@ -262,7 +261,7 @@ Window {
                             delegate: Rectangle {
                                 height: 130
                                 width: 120
-                                color: "#2a2a2a"
+                                color: ThemeManager.current.bgSurfaceAlt
                                 radius: 8
                                 clip: true
 
@@ -280,21 +279,21 @@ Window {
 
                                         Text {
                                             text: modelData.kanji
-                                            color: "#aaaaaa"
+                                            color: ThemeManager.current.textMuted
                                             font.pixelSize: 12
                                             wrapMode: Text.Wrap
                                         }
 
                                         Text {
                                             text: modelData.reading
-                                            color: "#aaaaaa"
+                                            color: ThemeManager.current.textMuted
                                             font.pixelSize: 12
                                             wrapMode: Text.Wrap
                                         }
 
                                         Text {
                                             text: modelData.meaning.replace(/\//g, " / ")
-                                            color: "white"
+                                            color: ThemeManager.current.textPrimary
                                             font.pixelSize: 12
                                             width: parent.width
                                             wrapMode: Text.Wrap
@@ -303,7 +302,7 @@ Window {
 
                                         Text {
                                             text: "N" + modelData.jlpt
-                                            color: "white"
+                                            color: ThemeManager.current.textPrimary
                                             font.pixelSize: 11
                                         }
                                     }

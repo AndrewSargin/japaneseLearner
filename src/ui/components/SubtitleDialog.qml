@@ -2,11 +2,12 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
+import JapaneseLearner
 
 Window {
 
     id: subtitleDialog
-    color: "#121214"
+    color: ThemeManager.current.bgPanel
 
     property alias originalSubs: originalSubs
     property alias translationSubs: translationSubs
@@ -23,7 +24,7 @@ Window {
             Layout.fillWidth: true
             Layout.preferredHeight: 48
             color: "transparent"
-            border.color: "#27272a"
+            border.color: ThemeManager.current.border
             border.width: 1
 
 
@@ -33,7 +34,7 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.topMargin: 8
                 text: "Select Subtitle Tracks"
-                color: "#f4f4f5"
+                color: ThemeManager.current.textPrimary
             }
 
             Button {
@@ -44,14 +45,14 @@ Window {
 
                 background: Rectangle {
                     radius: 8
-                    color: "#09090b"
-                    border.color: "#27272a"
+                    color: ThemeManager.current.bgApp
+                    border.color: ThemeManager.current.border
                     border.width: 1
                 }
 
                 contentItem: Text {
                     text: "X"
-                    color: "#a1a1aa"
+                    color: ThemeManager.current.textSecondary
                     font.pixelSize: 12
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
@@ -78,7 +79,7 @@ Window {
                         Layout.alignment: Qt.AlignTop
                         text: "ORIGINAL LANGUAGE"
                         font.pixelSize: 12
-                        color: "#a1a1aa"
+                        color: ThemeManager.current.textSecondary
                     }
 
                     Flickable{
@@ -120,9 +121,9 @@ Window {
                                             x: originalTrackSelected.leftPadding
                                             y: parent.height / 2 - height / 2
                                             radius: 9
-                                            border.color: originalTrackSelected.checked ? "#38bdf8" : "#71717a"
+                                            border.color: originalTrackSelected.checked ? ThemeManager.current.accent : ThemeManager.current.textMuted
                                             border.width: 2
-                                            color: "#121214"
+                                            color: ThemeManager.current.bgPanel
 
                                             Rectangle {
                                                 width: 10
@@ -130,7 +131,7 @@ Window {
                                                 x: parent.width / 2 - width / 2
                                                 y: parent.height / 2 - height / 2
                                                 radius: 5
-                                                color: originalTrackSelected.checked ? "#38bdf8" : "#71717a"
+                                                color: originalTrackSelected.checked ? ThemeManager.current.accent : ThemeManager.current.textMuted
                                                 visible: originalTrackSelected.checked
                                             }
                                         }
@@ -144,7 +145,7 @@ Window {
 
                                         Text {
                                             text: "Track: " + modelData.title
-                                            color: "#f4f4f5"
+                                            color: ThemeManager.current.textPrimary
                                             font.pixelSize: 14
                                             font.bold: true
                                         }
@@ -153,13 +154,13 @@ Window {
 
                                             Text {
                                                 text: modelData.language
-                                                color: "#71717a"
+                                                color: ThemeManager.current.textMuted
                                                 font.pixelSize: 10
                                             }
 
                                             Text {
                                                 text: " • " + modelData.format
-                                                color: "#71717a"
+                                                color: ThemeManager.current.textMuted
                                                 font.pixelSize: 10
                                             }
                                         }
@@ -175,7 +176,7 @@ Window {
                     Layout.fillHeight: true
                     Layout.margins: 8
 
-                    color: "#27272a"
+                    color: ThemeManager.current.border
 
                 }
 
@@ -188,7 +189,7 @@ Window {
                         Layout.alignment: Qt.AlignTop
                         text: "TRANSLATION"
                         font.pixelSize: 12
-                        color: "#a1a1aa"
+                        color: ThemeManager.current.textSecondary
                     }
 
                     Flickable{
@@ -230,9 +231,10 @@ Window {
                                             x: translationTrackSelected.leftPadding
                                             y: parent.height / 2 - height / 2
                                             radius: 9
-                                            border.color: translationTrackSelected.checked ? "#38bdf8" : "#71717a"
+                                            border.color: translationTrackSelected.checked ? ThemeManager.current.accent : ThemeManager.current.textMuted
+
                                             border.width: 2
-                                            color: "#121214"
+                                            color: ThemeManager.current.bgPanel
 
                                             Rectangle {
                                                 width: 10
@@ -240,7 +242,8 @@ Window {
                                                 x: parent.width / 2 - width / 2
                                                 y: parent.height / 2 - height / 2
                                                 radius: 5
-                                                color: translationTrackSelected.checked ? "#38bdf8" : "#71717a"
+                                                color: translationTrackSelected.checked ? ThemeManager.current.accent : ThemeManager.current.textMuted
+
                                                 visible: translationTrackSelected.checked
                                             }
                                         }
@@ -255,7 +258,7 @@ Window {
 
                                         Text {
                                             text: "Track: " + modelData.title
-                                            color: "#f4f4f5"
+                                            color: ThemeManager.current.textPrimary
                                             font.pixelSize: 14
                                             font.bold: true
                                         }
@@ -264,13 +267,13 @@ Window {
 
                                             Text {
                                                 text: modelData.language
-                                                color: "#71717a"
+                                                color: ThemeManager.current.textMuted
                                                 font.pixelSize: 10
                                             }
 
                                             Text {
                                                 text: " • " + modelData.format
-                                                color: "#71717a"
+                                                color: ThemeManager.current.textMuted
                                                 font.pixelSize: 10
                                             }
                                         }
@@ -295,12 +298,12 @@ Window {
 
             background: Rectangle {
                 radius: 4
-                color: "#27272a"
+                color: ThemeManager.current.border
             }
 
             contentItem: Text {
                 text: "Load External File..."
-                color: "#38bdf8"
+                color: ThemeManager.current.accent
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
@@ -309,8 +312,8 @@ Window {
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 48          
-            color: "#18181b"
-            border.color: "#27272a"
+            color: ThemeManager.current.bgSurface
+            border.color: ThemeManager.current.border
             border.width: 1
 
             Button {
@@ -329,12 +332,12 @@ Window {
 
                 background: Rectangle {
                     radius: 4
-                    color: "#38BDF8"
+                    color: ThemeManager.current.accent
                 }
 
                 contentItem: Text {
                     text: "Apply changes"
-                    color: "black"
+                    color: ThemeManager.current.accentText
                     font.pixelSize: 12
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter 
@@ -351,14 +354,14 @@ Window {
 
                 background: Rectangle {
                     radius: 4
-                    color: "#27272a"
+                    color: ThemeManager.current.border
                     border.width: 1
-                    border.color: "#a1a1aa"
+                    border.color: ThemeManager.current.textSecondary
                 }
 
                 contentItem: Text {
                     text: "Cancel"
-                    color: "#a1a1aa"
+                    color: ThemeManager.current.textSecondary
                     font.pixelSize: 12
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
