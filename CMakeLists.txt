@@ -75,6 +75,12 @@ qt_add_qml_module(japanese-learner
         src/ui/themes/DarkTheme.qml
         src/ui/themes/LightTheme.qml
 
+    RESOURCES
+        src/ui/icons/Play_btn.svg
+        src/ui/icons/Next_btn.svg
+        src/ui/icons/Prev_btn.svg
+        src/ui/icons/Volume_btn.svg
+
 )
 
 
