@@ -72,6 +72,7 @@ qt_add_qml_module(japanese-learner
         src/ui/ThemeManager.qml
         src/ui/components/ButtonStyled.qml
         src/ui/components/SubtitleDialog.qml
+        src/ui/components/SubtitlesDropdown.qml
         src/ui/themes/DarkTheme.qml
         src/ui/themes/LightTheme.qml
 

@@ -7,6 +7,7 @@ QtObject {
     readonly property color bgPanel:            "#121214"
     readonly property color bgSurface:          "#18181b"
     readonly property color bgSurfaceAlt:       "#2a2a2a"
+    readonly property color bgPanelSelected:    "#242429"
 
     readonly property color border:             "#27272a"
 
@@ -18,5 +19,5 @@ QtObject {
     readonly property color accentText:         "black"
 
     readonly property color danger:             "#ef4444"
-    readonly property color success:            "#22c55e"
+    readonly property color success:            "#10b981"
 }

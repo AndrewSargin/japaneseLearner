@@ -34,7 +34,7 @@ Window {
     ColumnLayout {
 
         anchors.fill: parent
-        spacing: 0
+        spacing: 16
 
         Rectangle {
             id: topBar
@@ -66,14 +66,18 @@ Window {
                     onClicked: videoDialog.open()
                 }
                 ButtonStyled {
-                    id: loadOriginalSubsButton
-                    text: "Load Subs (Original)"
-                    onClicked: subsDialog.open()
+                    id: selectSubs
+                    text: "Select Subtitles"
+                    onPressed: {
+                        if (!subsDropdown.opened)
+                            subsDropdown.open()
+                        else subsDropdown.close()
+                    }
                 }
+
                 ButtonStyled {
-                    id: loadTranslationSubsButton
-                    text: "Load Subs (Translation)"
-                    onClicked: translationSubsDialog.open()
+                    id: selectSound
+                    text: "Select Track"
                 }
 
             }
@@ -90,9 +94,11 @@ Window {
             }
         }
 
-        Item{
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.leftMargin: 16
+            Layout.rightMargin: 16
 
             VideoPlayer {
                 id: player
@@ -109,7 +115,7 @@ Window {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: subtitleColumn.width + 40
                 height: subtitleColumn.height + 20
-                color: ThemeManager.current.bgSurface
+                color: Qt.alpha(ThemeManager.current.bgSurface, 0.4)
                 visible: subtitleText.text !== "" || translationText.text !== ""
 
                 Column {
@@ -143,11 +149,9 @@ Window {
 
             Layout.fillWidth: true
             Layout.preferredHeight: 100
-            Layout.topMargin: 16
             Layout.leftMargin: 16
             Layout.rightMargin: 16
-            Layout.bottomMargin: 16
-            radius: 4
+            radius: 8
             color: ThemeManager.current.bgSurface
             border.color: ThemeManager.current.border
             border.width: 1
@@ -331,7 +335,7 @@ Window {
                             Rectangle {
                                 width: volume.visualPosition * parent.width
                                 height: parent.height
-                                color: ThemeManager.current.accent
+                                color: ThemeManager.current.textSecondary
                                 radius: 2
                             }
                         }
@@ -339,6 +343,7 @@ Window {
                         handle: Rectangle {
                             x: volume.leftPadding + volume.visualPosition * (volume.availableWidth - width)
                             y: volume.topPadding + volume.availableHeight / 2 - height / 2
+                            color: "transparent"
                             implicitWidth: 12
                             implicitHeight: 12
                             radius: 6
@@ -351,7 +356,13 @@ Window {
         Rectangle {
             id: wordBreakdown
             Layout.fillWidth: true
-            Layout.preferredHeight: 150
+            Layout.leftMargin: 16
+            Layout.rightMargin: 16
+            Layout.bottomMargin: 16
+            Layout.preferredHeight: 174
+            radius: 8
+            border.width: 1
+            border.color: ThemeManager.current.border
             color: ThemeManager.current.bgSurface
 
             ColumnLayout {
@@ -359,10 +370,14 @@ Window {
                 spacing: 8
 
                 Row {
+                    Layout.leftMargin: 8
+                    Layout.topMargin: 8
 
                     Text {
                         text: "Word breakdown"
                         color: ThemeManager.current.textPrimary
+                        font.pixelSize: 12
+                        font.bold: true
                     }
 
                 }
@@ -370,6 +385,9 @@ Window {
                 Flickable {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
+                    Layout.leftMargin: 8
+                    Layout.rightMargin: 8
+                    Layout.bottomMargin: 8
                     contentWidth: wordRow.width
                     flickableDirection: Flickable.HorizontalFlick
                     clip: true
@@ -457,20 +475,19 @@ Window {
         nameFilters: ["Subtitle files (*.srt *.ass)"]
     }
 
-    FileDialog {
-        id: translationSubsDialog
-        title: "Select Subs"
-        nameFilters: ["Subtitle files (*.srt *.ass)"]
-    }
-
     SubtitleDialog {
         id: subtitleDialog
-
         transientParent: mainWindow
         modality: Qt.ApplicationModal
 
     }
 
+    SubtitlesDropdown {
+        id: subsDropdown
+        parent: selectSubs
+        x: 0 + selectSubs.width / 2 - width / 2
+        y: selectSubs.height + 8
+    }
 }
 
 

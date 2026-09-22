@@ -101,7 +101,10 @@ Window {
                                 delegate: Rectangle {
                                     width: parent.width
                                     height: 55
-                                    color: "transparent"
+                                    radius: 8
+                                    color: originalTrackSelected.checked ? ThemeManager.current.bgPanelSelected : "transparent"
+                                    border.width: 1
+                                    border.color: originalTrackSelected.checked ? ThemeManager.current.accent : "transparent" 
 
                                     MouseArea {
                                         anchors.fill: parent
@@ -211,7 +214,10 @@ Window {
                                 delegate: Rectangle {
                                     width: parent.width
                                     height: 55
-                                    color: "transparent"
+                                    radius: 8
+                                    color: translationTrackSelected.checked ? ThemeManager.current.bgPanelSelected : "transparent"
+                                    border.width: 1
+                                    border.color: translationTrackSelected.checked ? ThemeManager.current.accent : "transparent" 
 
                                     MouseArea {
                                         anchors.fill: parent
